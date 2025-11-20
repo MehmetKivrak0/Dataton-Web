@@ -1,0 +1,95 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --background: 220 30% 8%;
+    --foreground: 0 0% 100%;
+    
+    --card: 220 30% 12%;
+    --card-foreground: 0 0% 100%;
+    
+    --popover: 220 30% 12%;
+    --popover-foreground: 0 0% 100%;
+    
+    --primary: 180 100% 50%;
+    --primary-foreground: 220 30% 8%;
+    
+    --secondary: 260 80% 70%;
+    --secondary-foreground: 0 0% 100%;
+    
+    --muted: 220 20% 20%;
+    --muted-foreground: 220 10% 65%;
+    
+    --accent: 260 80% 70%;
+    --accent-foreground: 0 0% 100%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 220 20% 25%;
+    --input: 220 20% 25%;
+    --ring: 180 100% 50%;
+    
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+}
+
+@layer utilities {
+  .text-cyber-cyan {
+    color: #00d9ff;
+  }
+  
+  .text-cyber-purple {
+    color: #8b5cf6;
+  }
+  
+  .bg-cyber-dark {
+    background-color: #0a0e27;
+  }
+  
+  .bg-cyber-dark-secondary {
+    background-color: #1a1f3a;
+  }
+  
+  .glow-cyan {
+    box-shadow: 0 0 20px rgba(0, 217, 255, 0.5);
+  }
+  
+  .glow-purple {
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+  }
+  
+  .glow-cyan-text {
+    text-shadow: 0 0 10px rgba(0, 217, 255, 0.8);
+  }
+  
+  .glow-purple-text {
+    text-shadow: 0 0 10px rgba(139, 92, 246, 0.8);
+  }
+  
+  .glass {
+    background: rgba(26, 31, 58, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .neon-border {
+    border: 1px solid #00d9ff;
+    box-shadow: 
+      0 0 5px #00d9ff,
+      inset 0 0 5px #00d9ff;
+  }
+}
