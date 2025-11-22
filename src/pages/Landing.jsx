@@ -1,9 +1,7 @@
 import { motion } from "framer-motion"
-import { useEffect, useRef } from "react"
 import { Award, Github, Linkedin } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Navbar } from "@/components/Navbar"
 import { CountdownTimer } from "@/components/CountdownTimer"
 
 const rewards = [
@@ -105,80 +103,224 @@ const skylineBars = [
   { height: "h-[6.5rem]", width: "w-3", glow: "via-[#f472b6]" },
 ]
 
-function MatrixNewYear() {
-  const canvasRef = useRef(null)
 
-  useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
+function SnowflakeSVG({ size, className }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      className={className}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      {/* Ana çizgiler - 6 kollu kar tanesi */}
+      {[0, 60, 120, 180, 240, 300].map((rotation, i) => (
+        <g key={i} transform={`rotate(${rotation} 12 12)`}>
+          <line
+            x1="12"
+            y1="2"
+            x2="12"
+            y2="8"
+            stroke="currentColor"
+            strokeWidth="1"
+            strokeLinecap="round"
+          />
+          <line
+            x1="12"
+            y1="16"
+            x2="12"
+            y2="22"
+            stroke="currentColor"
+            strokeWidth="1"
+            strokeLinecap="round"
+          />
+          {/* Yan dallar */}
+          <line
+            x1="12"
+            y1="8"
+            x2="8"
+            y2="12"
+            stroke="currentColor"
+            strokeWidth="0.8"
+            strokeLinecap="round"
+          />
+          <line
+            x1="12"
+            y1="8"
+            x2="16"
+            y2="12"
+            stroke="currentColor"
+            strokeWidth="0.8"
+            strokeLinecap="round"
+          />
+        </g>
+      ))}
+      {/* Merkez nokta */}
+      <circle cx="12" cy="12" r="1.5" fill="currentColor" />
+    </svg>
+  )
+}
 
-    const ctx = canvas.getContext("2d")
-    const fontSize = 22
-    const glyphs = "01NYE25+=*"
-    let animationFrame
-    let drops = []
+function WinterSnowfall() {
+  return (
+    <div className="fixed inset-0 w-full h-screen overflow-hidden pointer-events-none z-0">
+      {/* Büyük kar taneleri - gerçek kar tanesi şekilleri */}
+      {Array.from({ length: 20 }).map((_, i) => {
+        const size = Math.random() * 8 + 6
+        const left = Math.random() * 100
+        const duration = Math.random() * 10 + 15
+        const delay = Math.random() * 5
+        const drift = Math.random() * 60 - 30
+        
+        return (
+          <motion.div
+            key={`snowflake-large-${i}`}
+            className="absolute"
+            style={{
+              left: `${left}%`,
+              top: '-10px',
+            }}
+            initial={{ y: -10, opacity: 0, rotate: 0 }}
+            animate={{
+              y: ['-10px', '150vh'],
+              x: [0, `${drift}px`, `${drift * 1.5}px`],
+              opacity: [0, 0.9, 0.9, 0],
+              rotate: [0, 360],
+            }}
+            transition={{
+              duration,
+              repeat: Infinity,
+              delay,
+              ease: 'linear',
+            }}
+          >
+            <SnowflakeSVG 
+              size={size} 
+              className="text-cyan-200 drop-shadow-[0_0_4px_rgba(0,245,255,0.8)]" 
+            />
+          </motion.div>
+        )
+      })}
 
-    const resize = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight * 1.1
-      const columns = Math.floor(canvas.width / fontSize)
-      drops = Array(columns).fill(1)
-    }
+      {/* Orta boy kar taneleri */}
+      {Array.from({ length: 30 }).map((_, i) => {
+        const size = Math.random() * 5 + 3
+        const left = Math.random() * 100
+        const duration = Math.random() * 8 + 10
+        const delay = Math.random() * 4
+        const drift = Math.random() * 40 - 20
+        
+        return (
+          <motion.div
+            key={`snowflake-medium-${i}`}
+            className="absolute"
+            style={{
+              left: `${left}%`,
+              top: '-5px',
+            }}
+            initial={{ y: -5, opacity: 0, rotate: 0 }}
+            animate={{
+              y: ['-5px', '150vh'],
+              x: [0, `${drift}px`],
+              opacity: [0, 0.8, 0.8, 0],
+              rotate: [0, -360],
+            }}
+            transition={{
+              duration,
+              repeat: Infinity,
+              delay,
+              ease: 'linear',
+            }}
+          >
+            <SnowflakeSVG 
+              size={size} 
+              className="text-blue-200 drop-shadow-[0_0_3px_rgba(59,130,246,0.6)]" 
+            />
+          </motion.div>
+        )
+      })}
 
-    resize()
-    window.addEventListener("resize", resize)
+      {/* Orta boy kar taneleri */}
+      {Array.from({ length: 25 }).map((_, i) => {
+        const size = Math.random() * 3 + 2
+        const left = Math.random() * 100
+        const duration = Math.random() * 8 + 10
+        const delay = Math.random() * 4
+        const drift = Math.random() * 40 - 20
+        
+        return (
+          <motion.div
+            key={`snowflake-medium-${i}`}
+            className="absolute rounded-full"
+            style={{
+              left: `${left}%`,
+              top: '-5px',
+              width: `${size}px`,
+              height: `${size}px`,
+              background: 'radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(200,230,255,0.6) 100%)',
+              boxShadow: '0 0 6px rgba(0,245,255,0.4)',
+            }}
+            initial={{ y: -5, opacity: 0 }}
+            animate={{
+              y: ['-5px', '110vh'],
+              x: [0, `${drift}px`],
+              opacity: [0, 0.7, 0.7, 0],
+            }}
+            transition={{
+              duration,
+              repeat: Infinity,
+              delay,
+              ease: 'linear',
+            }}
+          />
+        )
+      })}
 
-    const snowflakes = Array.from({ length: 45 }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      r: Math.random() * 0.9 + 0.3,
-      speed: Math.random() * 0.12 + 0.04,
-    }))
-
-    const draw = () => {
-      ctx.fillStyle = "rgba(1,4,12,0.5)"
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
-      ctx.font = `${fontSize}px 'Space Mono', 'Roboto Mono', monospace`
-
-      drops.forEach((dropY, idx) => {
-        const text = glyphs[Math.floor(Math.random() * glyphs.length)]
-        ctx.fillStyle = idx % 4 === 0 ? "rgba(139,92,246,0.7)" : "rgba(0,245,255,0.72)"
-        ctx.fillText(text, idx * fontSize, dropY * fontSize)
-        if (dropY * fontSize > canvas.height && Math.random() > 0.997) {
-          drops[idx] = 0
-        }
-        drops[idx] += 0.14
-      })
-
-      ctx.fillStyle = "rgba(255,255,255,0.8)"
-      snowflakes.forEach(snow => {
-        ctx.beginPath()
-        ctx.arc(snow.x, snow.y, snow.r, 0, Math.PI * 2)
-        ctx.fill()
-        snow.y += snow.speed
-        if (snow.y > canvas.height) {
-          snow.y = -5
-          snow.x = Math.random() * canvas.width
-        }
-      })
-
-      animationFrame = requestAnimationFrame(draw)
-    }
-
-    animationFrame = requestAnimationFrame(draw)
-
-    return () => {
-      cancelAnimationFrame(animationFrame)
-      window.removeEventListener("resize", resize)
-    }
-  }, [])
-
-  return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full opacity-70 mix-blend-screen" />
+      {/* Küçük kar taneleri - arka plan */}
+      {Array.from({ length: 50 }).map((_, i) => {
+        const size = Math.random() * 3 + 2
+        const left = Math.random() * 100
+        const duration = Math.random() * 6 + 8
+        const delay = Math.random() * 3
+        const drift = Math.random() * 30 - 15
+        
+        return (
+          <motion.div
+            key={`snowflake-small-${i}`}
+            className="absolute"
+            style={{
+              left: `${left}%`,
+              top: '-3px',
+            }}
+            initial={{ y: -3, opacity: 0, rotate: 0 }}
+            animate={{
+              y: ['-3px', '150vh'],
+              x: [0, `${drift}px`],
+              opacity: [0, 0.6, 0.6, 0],
+              rotate: [0, 360],
+            }}
+            transition={{
+              duration,
+              repeat: Infinity,
+              delay,
+              ease: 'linear',
+            }}
+          >
+            <SnowflakeSVG 
+              size={size} 
+              className="text-white/70 drop-shadow-[0_0_2px_rgba(255,255,255,0.5)]" 
+            />
+          </motion.div>
+        )
+      })}
+    </div>
+  )
 }
 
 function SnowFlakesLayer({ density = 30, sizeRange = [0.8, 2], drift = 2, className }) {
   return (
-    <div className={`pointer-events-none absolute inset-0 ${className ?? ""}`}>
+    <div className={`pointer-events-none fixed inset-0 w-full h-screen ${className ?? ""}`}>
       {Array.from({ length: density }).map((_, idx) => {
         const size = Math.random() * (sizeRange[1] - sizeRange[0]) + sizeRange[0]
         const duration = Math.random() * 6 + 6
@@ -225,14 +367,13 @@ export default function Landing() {
         <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(0,255,153,0.1)_1px,transparent_1px)] bg-[length:30px_30px]" />
         <div className="absolute inset-0 animate-pulse bg-[radial-gradient(circle,rgba(255,255,255,0.15)_1px,transparent_1px)] bg-[length:120px_120px]" />
       </div>
-      <Navbar />
       <main className="relative">
         <section className="relative overflow-hidden bg-gradient-to-b from-[#000112] via-[#030313] to-[#020107]">
           <div className="absolute inset-0">
             <div className="absolute inset-0 opacity-30 bg-[linear-gradient(160deg,rgba(0,255,153,0.15),transparent),linear-gradient(20deg,rgba(59,130,246,0.25),transparent)] blur-3xl" />
           </div>
           <div className="absolute inset-0 pointer-events-none">
-            <MatrixNewYear />
+            <WinterSnowfall />
             <SnowFlakesLayer density={25} sizeRange={[0.8, 1.8]} className="opacity-70" />
             <SnowFlakesLayer density={12} sizeRange={[1.6, 3]} className="opacity-40" />
             <div className="absolute bottom-0 left-1/2 -translate-x-1/2 flex gap-2 sm:gap-3 md:gap-4 w-[120%] max-w-5xl">
@@ -325,7 +466,7 @@ export default function Landing() {
                   Görev Tanımı
                 </p>
                 <h2 className="text-3xl md:text-4xl font-orbitron text-white leading-tight">
-                  TEMPUS çekirdeğini senkronize et, 00:00:00&apos;da başlayacak yılbaşı Matrix&apos;ini koru.
+                  TEMPUS çekirdeğini senkronize et, 00:00:00&apos;da başlayacak yılbaşı operasyonunu koru.
                 </h2>
                 <p className="text-lg text-muted-foreground">
                   Web, stego, kripto ve veri görevleri tek şerit üzerinde ilerliyor. Her flag yeni veri setini açıyor; her veri satırı İstanbul silüetini ışıklandıran kalkanı besliyor.
@@ -353,7 +494,7 @@ export default function Landing() {
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-muted-foreground">Konsept</span>
-                    <span className="font-semibold text-white">Yeni Yıl Matrix Bariyeri</span>
+                    <span className="font-semibold text-white">Kuvars Kalkanı Operasyonu</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-muted-foreground">Format</span>

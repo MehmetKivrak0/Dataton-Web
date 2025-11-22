@@ -2,28 +2,6 @@
 
 Modern, ölçeklenebilir CTF (Capture The Flag) ve Datathon etkinlik platformu. 400+ eşzamanlı kullanıcıyı destekleyen, performanslı ve güvenli bir yarışma platformu.
 
-## 📋 İçindekiler
-
-- [Genel Bakış](#genel-bakış)
-- [Mimari Yapı](#mimari-yapı)
-- [Teknolojiler](#teknolojiler)
-- [Kurulum](#kurulum)
-- [Geliştirme](#geliştirme)
-- [Deployment](#deployment)
-
-## 🎯 Genel Bakış
-
-Bu platform, "Siber Müdahale Ekibi Alfa" hikayesi etrafında kurgulanmış bir CTF ve Datathon etkinliği için geliştirilmiştir. Katılımcılar, "Gölge" adlı kötü karakterin saldırılarını durdurmak için 6 aşamalı görevleri tamamlar.
-
-### Etkinlik Yapısı
-
-1. **Aşama 1**: CTF - Web Keşif (robots.txt analizi)
-2. **Aşama 2**: Datathon - Veri Temizleme ve EDA
-3. **Aşama 3**: CTF - Steganografi (gizli mesaj çıkarma)
-4. **Aşama 4**: Datathon - ML Sınıflandırma (Leaderboard 1)
-5. **Aşama 5**: CTF - Kriptografi (Vigenere şifresi)
-6. **Aşama 6**: Datathon - Optimizasyon TSP (Leaderboard 2)
-
 ## 🏗️ Mimari Yapı
 
 ```
@@ -44,149 +22,300 @@ Bu platform, "Siber Müdahale Ekibi Alfa" hikayesi etrafında kurgulanmış bir 
 ┌────────▼────────┐
 │  Supabase       │  PostgreSQL Database
 │  (Database)     │  Real-time Subscriptions
+└────────┬────────┘
+         │
+┌────────▼────────┐
+│  Redis Cache    │  Upstash Redis (Cache & Rate Limiting)
+│  (Optional)     │
 └─────────────────┘
 ```
 
 ## 🚀 Teknolojiler
 
 ### Frontend
-- React 19 + Vite
-- Tailwind CSS + shadcn/ui
-- Framer Motion
-- React Router
-- Zustand
-- Socket.io Client
-- React Hook Form + Zod
+- **React 19** - UI Framework
+- **Vite** - Build Tool (Hızlı HMR)
+- **Tailwind CSS** - Utility-first CSS Framework
+- **shadcn/ui** - Modern, özelleştirilebilir UI bileşenleri
+- **Framer Motion** - Smooth animasyonlar
+- **React Router v6** - Client-side routing
+- **Zustand** - Hafif state management
+- **Socket.io Client** - Real-time güncellemeler
+- **React Hook Form + Zod** - Performanslı form yönetimi ve validasyon
+- **Axios** - HTTP client
+- **React Hot Toast** - Bildirimler
+- **Recharts** - Grafik ve görselleştirme
 
 ### Backend
-- Node.js + Express
-- Supabase (PostgreSQL)
-- Socket.io
-- Redis (Upstash - Cache & Rate Limiting)
-- JWT Authentication
+- **Node.js** - Runtime environment
+- **Express.js** - Web framework
+- **Supabase** - PostgreSQL veritabanı (Connection pooling dahil)
+- **Socket.io** - Real-time bidirectional communication
+- **Redis** (Upstash) - Cache ve rate limiting
+- **JWT** - Authentication token'ları
+- **Bcrypt** - Şifre hashleme
+- **Multer** - Dosya upload yönetimi
+
+### Veritabanı (Supabase)
+- **PostgreSQL** - İlişkisel veritabanı
+- **Connection Pooling** - 400+ eşzamanlı kullanıcı desteği
+- **Real-time Subscriptions** - Anlık veri güncellemeleri
+- **Row Level Security (RLS)** - Güvenlik politikaları
+- **Storage API** - Zip dosyaları için
 
 ## 📦 Kurulum
 
 ### Gereksinimler
-- Node.js 18+
+- Node.js 18+ 
 - npm veya yarn
 - Supabase hesabı (ücretsiz)
 
-### Adımlar
+### Frontend Kurulumu
 
-1. **Repository'yi klonlayın**
-```bash
-git clone <repository-url>
-cd Dataton-Web
-```
-
-2. **Frontend kurulumu**
 ```bash
 cd frontend
 npm install
 ```
 
-3. **Backend kurulumu**
+### Backend Kurulumu
+
 ```bash
 cd backend
 npm install
 ```
 
-4. **Supabase yapılandırması**
-   - [Supabase](https://supabase.com) hesabı oluşturun
-   - Yeni proje oluşturun
-   - `.env` dosyalarını yapılandırın (detaylar için `frontend/README.md` ve `backend/README.md`)
+### Supabase Kurulumu
+
+1. [Supabase](https://supabase.com) hesabı oluşturun
+2. Yeni proje oluşturun
+3. `.env` dosyasını oluşturun:
+
+```env
+SUPABASE_URL=your-project-url
+SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+DATABASE_URL=your-connection-string
+```
+
+4. Veritabanı şemasını çalıştırın (SQL migrations)
 
 ## 🏃 Geliştirme
 
 ### Frontend
+
 ```bash
 cd frontend
 npm run dev
 ```
+
 Frontend `http://localhost:5173` adresinde çalışacak.
 
 ### Backend
+
 ```bash
 cd backend
 npm run dev
 ```
+
 Backend `http://localhost:3000` adresinde çalışacak.
+
+## 🎨 Tasarım Sistemi
+
+### Renkler (CTF Cyber Theme)
+- **Cyber Dark**: `#0a0e27` - Ana arka plan
+- **Cyber Dark Secondary**: `#1a1f3a` - İkincil arka plan
+- **Cyber Cyan**: `#00d9ff` - Vurgu rengi (neon efektler)
+- **Cyber Purple**: `#8b5cf6` - İkincil vurgu
+- **Success**: `#10b981` - Flag bulundu
+- **Danger**: `#ef4444` - Hata durumları
+
+### Fontlar
+- **Orbitron** - Başlıklar için (futuristik, CTF teması)
+- **Rajdhani** - Alt başlıklar için
+- **Inter** - Body text için (okunabilirlik)
+
+### Özel Utility Class'lar
+- `.glow-cyan` - Cyan glow efekti
+- `.glow-purple` - Purple glow efekti
+- `.neon-border` - Neon kenarlık
+- `.glass` - Glassmorphism efekti
 
 ## 📁 Proje Yapısı
 
 ```
 Dataton-Web/
-├── frontend/          # React uygulaması
+├── frontend/
 │   ├── src/
 │   │   ├── components/
-│   │   ├── pages/
+│   │   │   ├── ui/              # shadcn/ui bileşenleri
+│   │   │   └── ...              # Özel bileşenler
+│   │   ├── pages/               # Sayfa bileşenleri
+│   │   │   ├── Landing.jsx
+│   │   │   ├── Dashboard.jsx
+│   │   │   └── stages/          # Aşama sayfaları
 │   │   ├── lib/
-│   │   └── ...
-│   └── README.md
+│   │   │   ├── utils.js         # Utility fonksiyonlar
+│   │   │   └── supabase.js      # Supabase client
+│   │   ├── hooks/               # Custom React hooks
+│   │   ├── store/               # Zustand store
+│   │   ├── services/            # API servisleri
+│   │   └── utils/               # Yardımcı fonksiyonlar
+│   ├── public/                  # Statik dosyalar
+│   └── package.json
 │
-├── backend/           # Node.js API
+├── backend/
 │   ├── src/
-│   │   ├── routes/
-│   │   ├── controllers/
-│   │   ├── services/
-│   │   └── ...
-│   └── README.md
+│   │   ├── routes/              # API route'ları
+│   │   ├── controllers/         # İş mantığı
+│   │   ├── models/              # Veritabanı modelleri
+│   │   ├── middleware/          # Auth, rate limiting
+│   │   ├── services/            # Supabase servisleri
+│   │   ├── utils/               # Yardımcı fonksiyonlar
+│   │   └── config/              # Yapılandırma
+│   ├── uploads/                 # Zip dosyaları
+│   └── package.json
 │
-├── database/          # SQL migrations
-│   └── migrations/
-│
-└── README.md          # Bu dosya
+└── database/
+    └── migrations/              # SQL migration dosyaları
 ```
 
-## 🎨 Tasarım
+## 🗄️ Veritabanı Şeması (Supabase)
 
-- **Tema**: Cyber CTF (Karanlık, neon efektler)
-- **Renkler**: Cyan (#00d9ff) ve Purple (#8b5cf6) vurgular
-- **Fontlar**: Orbitron (başlıklar), Inter (body)
+### Ana Tablolar
 
-Detaylı tasarım bilgileri için `frontend/README.md` dosyasına bakın.
+- **users** - Kullanıcı bilgileri
+- **teams** - Takım bilgileri
+- **stages** - Aşama tanımları
+- **submissions** - Flag gönderimleri
+- **leaderboard_ml** - ML model skorları
+- **leaderboard_optimization** - Optimizasyon skorları
+- **user_progress** - Kullanıcı ilerlemesi
+
+## 🎯 Özellikler
+
+### Frontend
+- ✅ Modern, responsive tasarım (mobile-first)
+- ✅ Dark mode (varsayılan)
+- ✅ Real-time leaderboard (Socket.io)
+- ✅ Aşamalı görev sistemi (6 aşama)
+- ✅ Flag doğrulama formu
+- ✅ Dosya indirme sistemi
+- ✅ Animasyonlu UI (Framer Motion)
+- ✅ CTF cyber teması
+- ✅ Progress tracking
+- ✅ Toast bildirimleri
+
+### Backend
+- ✅ RESTful API
+- ✅ JWT authentication
+- ✅ Rate limiting (Redis ile)
+- ✅ Flag doğrulama sistemi
+- ✅ Dosya upload/download
+- ✅ Real-time updates (Socket.io)
+- ✅ Connection pooling (Supabase)
+- ✅ Error handling & logging
+- ✅ CORS yapılandırması
+
+### Veritabanı (Supabase)
+- ✅ PostgreSQL (güçlü ve ölçeklenebilir)
+- ✅ Connection pooling (400+ eşzamanlı kullanıcı)
+- ✅ Real-time subscriptions
+- ✅ Row Level Security (RLS)
+- ✅ Storage API (zip dosyaları)
+- ✅ Otomatik API oluşturma
 
 ## 🔒 Güvenlik
 
-- JWT Authentication
-- Rate Limiting
-- Input Validation
-- SQL Injection Protection
-- CORS yapılandırması
+- **JWT Tokens** - Güvenli authentication
+- **Rate Limiting** - API abuse önleme
+- **CORS** - Cross-origin koruması
+- **Input Validation** - Zod ile validasyon
+- **SQL Injection Protection** - Supabase prepared statements
+- **XSS Protection** - React otomatik escaping
+- **Flag Encryption** - Hassas verilerin korunması
 
-## 📊 Performans
+## 📊 Performans Optimizasyonları
 
-### 400+ Eşzamanlı Kullanıcı İçin Optimizasyonlar
+### 400+ Eşzamanlı Kullanıcı İçin
 
-1. **Supabase Connection Pooling** - Otomatik bağlantı yönetimi
-2. **Redis Cache** - Flag doğrulama ve session cache
-3. **Database Indexing** - Hızlı sorgular
-4. **API Rate Limiting** - Abuse önleme
-5. **CDN** (İsteğe bağlı) - Statik dosya servisi
+1. **Connection Pooling** (Supabase)
+   - Otomatik connection yönetimi
+   - 400+ bağlantıyı verimli yönetir
+
+2. **Redis Cache** (Upstash)
+   - Flag doğrulama cache
+   - Session cache
+   - Rate limiting
+
+3. **Database Indexing**
+   - Sık sorgulanan kolonlar için index'ler
+   - Hızlı arama ve sıralama
+
+4. **API Rate Limiting**
+   - Kullanıcı başına limit
+   - IP bazlı koruma
+
+5. **CDN** (İsteğe bağlı)
+   - Statik dosyalar için
+   - Zip dosyaları için
 
 ## 🚀 Deployment
 
-### Frontend
-- **Vercel** veya **Netlify** (önerilen)
-- Otomatik CI/CD
-- CDN dahil
+### Frontend (Vercel/Netlify)
+```bash
+cd frontend
+npm run build
+```
 
-### Backend
-- **Railway** veya **Render**
-- Environment variables yapılandırın
-- Supabase connection string'i ekleyin
+### Backend (Railway/Render)
+```bash
+cd backend
+npm start
+```
 
 ### Supabase
 - Otomatik hosting
 - Connection pooling dahil
 - SSL sertifikaları otomatik
 
+## 📝 Environment Variables
+
+### Frontend (.env)
+```env
+VITE_API_URL=http://localhost:3000
+VITE_SUPABASE_URL=your-supabase-url
+VITE_SUPABASE_ANON_KEY=your-anon-key
+```
+
+### Backend (.env)
+```env
+PORT=3000
+SUPABASE_URL=your-supabase-url
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+DATABASE_URL=your-connection-string
+REDIS_URL=your-redis-url (optional)
+JWT_SECRET=your-jwt-secret
+NODE_ENV=development
+```
+
+## 🧪 Test
+
+```bash
+# Frontend testleri
+cd frontend
+npm run test
+
+# Backend testleri
+cd backend
+npm run test
+```
+
 ## 📚 Dokümantasyon
 
-- [Frontend README](frontend/README.md) - Detaylı frontend dokümantasyonu
-- [Backend README](backend/README.md) - Detaylı backend dokümantasyonu (oluşturulacak)
 - [Supabase Docs](https://supabase.com/docs)
+- [React Router](https://reactrouter.com/)
+- [shadcn/ui](https://ui.shadcn.com/)
+- [Tailwind CSS](https://tailwindcss.com/)
 
 ## 🤝 Katkıda Bulunma
 
@@ -200,7 +329,12 @@ Detaylı tasarım bilgileri için `frontend/README.md` dosyasına bakın.
 
 Bu proje özel bir etkinlik için geliştirilmiştir.
 
+## 👥 Ekip
+
+- Frontend: React + Tailwind CSS + shadcn/ui
+- Backend: Node.js + Express + Supabase
+- Database: PostgreSQL (Supabase)
+
 ---
 
 **Not**: Bu platform 400+ eşzamanlı kullanıcıyı desteklemek için optimize edilmiştir. Supabase'in connection pooling özelliği sayesinde yüksek trafikte stabil çalışır.
-
