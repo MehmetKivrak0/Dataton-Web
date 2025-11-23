@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import { ChevronLeft, ChevronRight, Search, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -116,6 +117,7 @@ function formatDate(dateString) {
 }
 
 export default function Team() {
+  const navigate = useNavigate()
   const [currentPage, setCurrentPage] = useState(1)
   const [searchQuery, setSearchQuery] = useState("")
   
@@ -220,7 +222,8 @@ export default function Team() {
                     currentTeams.map((team, index) => (
                       <tr
                         key={team.rank}
-                        className={`hover:bg-white/5 transition-colors ${
+                        onClick={() => navigate(`/team/${encodeURIComponent(team.name)}`)}
+                        className={`hover:bg-white/5 transition-colors cursor-pointer ${
                           index % 2 === 0 ? "bg-white/2" : "bg-transparent"
                         }`}
                       >

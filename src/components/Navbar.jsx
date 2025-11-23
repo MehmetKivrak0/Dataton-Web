@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useLocation, Link } from "react-router-dom"
 import { Menu, X, LogIn } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -7,11 +8,22 @@ const navItems = [
   { label: "Teams", href: "/team" },
   { label: "Scoreboard", href: "/scoreboard" },
   { label: "Challenges", href: "/#challenges" },
-  { label: "Dashboard", href: "/dashboard" },
 ]
 
 export function Navbar() {
   const [open, setOpen] = useState(false)
+  const location = useLocation()
+  
+  // Aktif sayfadaki nav item'ları filtrele
+  const filteredNavItems = navItems.filter(item => {
+    // Anchor link kontrolü (/#challenges gibi)
+    if (item.href.startsWith('/#')) {
+      // Landing sayfasındaysak challenges butonunu gösterme
+      return location.pathname !== '/'
+    }
+    // Normal route kontrolü - aktif sayfadaki butonu gösterme
+    return location.pathname !== item.href
+  })
 
   return (
     <header className="sticky top-0 z-50">
@@ -30,7 +42,7 @@ export function Navbar() {
             size="sm"
             className="bg-[#01040c] text-[#00FFFF] hover:bg-[#00FFFF] hover:text-[#01040c] border border-[#00FFFF] px-5 py-1.5 h-7 text-xs sm:text-sm rounded-full shadow-[0_0_18px_rgba(0,255,255,0.8)] font-bold transition-all duration-300"
           >
-            <a href="#teams">Kayıt Ol</a>
+            <Link to="/auth/register">Kayıt Ol</Link>
           </Button>
         </div>
       </div>
@@ -44,42 +56,54 @@ export function Navbar() {
           <div className="relative flex items-center justify-center h-16">
             {/* Left: Logo - Absolute positioning */}
             <div className="absolute left-4 lg:left-6 flex items-center flex-shrink-0">
-              <a href="/" className="text-white text-lg md:text-xl font-semibold tracking-tight hover:text-cyber-cyan transition-colors">
+              <Link to="/" className="text-white text-lg md:text-xl font-semibold tracking-tight hover:text-cyber-cyan transition-colors">
                 Dataton 2025
-              </a>
+              </Link>
             </div>
 
             {/* Center: Navigation Links - Perfectly centered */}
             <div className="hidden md:flex items-center gap-6 lg:gap-8">
-              {navItems.map(item => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  className="text-muted-foreground hover:text-white transition-colors text-sm lg:text-base relative group"
-                  onClick={(e) => {
-                    // Anchor link ise smooth scroll
-                    if (item.href.startsWith('/#')) {
+              {filteredNavItems.map(item => (
+                item.href.startsWith('/#') ? (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    className="text-muted-foreground hover:text-white transition-colors text-sm lg:text-base relative group"
+                    onClick={(e) => {
                       e.preventDefault()
                       const hash = item.href.substring(1)
-                      if (hash === window.location.hash || window.location.pathname !== '/') {
-                        window.location.href = hash
+                      if (window.location.pathname !== '/') {
+                        window.location.href = `/${hash}`
                       } else {
                         document.querySelector(hash)?.scrollIntoView({ behavior: 'smooth' })
                       }
-                    }
-                  }}
-                >
-                  {item.label}
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-cyber-cyan transition-all group-hover:w-full" />
-                </a>
+                    }}
+                  >
+                    {item.label}
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-cyber-cyan transition-all group-hover:w-full" />
+                  </a>
+                ) : (
+                  <Link
+                    key={item.href}
+                    to={item.href}
+                    className="text-muted-foreground hover:text-white transition-colors text-sm lg:text-base relative group"
+                  >
+                    {item.label}
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-cyber-cyan transition-all group-hover:w-full" />
+                  </Link>
+                )
               ))}
             </div>
 
             {/* Right: Login - Absolute positioning */}
             <div className="absolute right-4 lg:right-6 flex items-center gap-4">
-              <button className="flex items-center gap-2 text-white hover:text-cyber-cyan transition-colors text-sm lg:text-base group">
+              <Link
+                to="/auth/login"
+                className="flex items-center gap-2 text-white hover:text-cyber-cyan transition-colors text-sm lg:text-base group"
+              >
                 <LogIn className="w-4 h-4 lg:w-5 lg:h-5 group-hover:translate-x-0.5 transition-transform" />
-              </button>
+                <span className="hidden sm:inline">Giriş Yap</span>
+              </Link>
               
               {/* Mobile Menu Button */}
               <button
@@ -102,27 +126,35 @@ export function Navbar() {
         )}
       >
         <div className="flex flex-col px-4 py-4 gap-4">
-          {navItems.map(item => (
-            <a
-              key={item.href}
-              href={item.href}
-              className="text-muted-foreground hover:text-cyber-cyan transition-colors py-2 border-b border-white/5 last:border-0"
-              onClick={(e) => {
-                setOpen(false)
-                // Anchor link ise smooth scroll
-                if (item.href.startsWith('/#')) {
+          {filteredNavItems.map(item => (
+            item.href.startsWith('/#') ? (
+              <a
+                key={item.href}
+                href={item.href}
+                className="text-muted-foreground hover:text-cyber-cyan transition-colors py-2 border-b border-white/5 last:border-0"
+                onClick={(e) => {
+                  setOpen(false)
                   e.preventDefault()
                   const hash = item.href.substring(1)
-                  if (hash === window.location.hash || window.location.pathname !== '/') {
-                    window.location.href = hash
+                  if (window.location.pathname !== '/') {
+                    window.location.href = `/${hash}`
                   } else {
                     document.querySelector(hash)?.scrollIntoView({ behavior: 'smooth' })
                   }
-                }
-              }}
-            >
-              {item.label}
-            </a>
+                }}
+              >
+                {item.label}
+              </a>
+            ) : (
+              <Link
+                key={item.href}
+                to={item.href}
+                className="text-muted-foreground hover:text-cyber-cyan transition-colors py-2 border-b border-white/5 last:border-0"
+                onClick={() => setOpen(false)}
+              >
+                {item.label}
+              </Link>
+            )
           ))}
         </div>
       </div>
