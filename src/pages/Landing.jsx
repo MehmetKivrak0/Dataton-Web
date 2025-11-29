@@ -28,79 +28,17 @@ const maker = {
   ],
 }
 
-const stages = [
-  {
-    name: "Aşama 1 · CTF",
-    title: "Hayaletin Yuvası",
-    type: "Web / Keşif",
-    description: "2010 Kutlama Portalı'nı araştır, robots.txt'den engellenmiş /eski_yonetim_notlari/ dizinini bul ve ilk flag'i çıkar.",
-    flag: "flag{G0LG3_S1NY4L1_K3ST1}",
-    unlocks: "data_part1.zip parolasını verir.",
-  },
-  {
-    name: "Aşama 2 · Datathon",
-    title: "Dijital Enkaz",
-    type: "Veri Temizleme & EDA",
-    description: "timestamps_corrupted.csv dosyasını temizle, SYDNEY şehrindeki anomaliyi bul.",
-    flag: "İpucu: SYDNEY",
-    unlocks: "Aşama 3 parolasını sağlar.",
-  },
-  {
-    name: "Aşama 3 · CTF",
-    title: "Opera Binası'ndaki Fısıltı",
-    type: "Steganografi",
-    description: "sydney_opera_house_NYE.jpg dosyasındaki gizli mesajı SYDNEY anahtarıyla çıkar.",
-    flag: "flag{S4KL1_S1NY4L_C0ZULDU}",
-    unlocks: "data_part2.zip parolasını verir.",
-  },
-  {
-    name: "Aşama 4 · Datathon",
-    title: "Kaos Sınıflandırması",
-    type: "ML Sınıflandırma",
-    description: "Gerçek vs Sahte sinyalleri ayıran model eğit, leaderboard 1'de yarış.",
-    flag: "Anahtar: signalfrequencykhz",
-    unlocks: "Aşama 5 Vigenere anahtarı.",
-  },
-  {
-    name: "Aşama 5 · CTF",
-    title: "Çekirdek Kilidi",
-    type: "Kriptografi",
-    description: "Vigenere şifresini signalfrequencykhz anahtarıyla çöz.",
-    flag: "flag{G0LGE_S1STEMDEN_AT1LD1}",
-    unlocks: "final_data.zip parolasını verir.",
-  },
-  {
-    name: "Aşama 6 · Datathon",
-    title: "Saniyelerle Yarış",
-    type: "Optimizasyon (TSP)",
-    description: "İstanbul Boğazı ateşleme platformları için en kısa rotayı bul, Final Leaderboard'da yarış.",
-    flag: "Final teslimi Kaggle leaderboard'ına gider.",
-    unlocks: "Final sunumu.",
-  },
-]
-
-const extraCtfIdeas = [
-  {
-    title: "Forensics",
-    text: "Gölge'nin bıraktığı .pcap dosyasını incele, C2 sunucu IP'sini flag olarak yakala.",
-  },
-  {
-    title: "Reverse Engineering",
-    text: "countdown_patcher.exe ikili dosyasını analiz edip gizli flag'i çıkart.",
-  },
-]
-
 const skylineBars = [
-  { height: "h-28", width: "w-4", glow: "via-[#1b2a5d]" },
-  { height: "h-36", width: "w-6", glow: "via-[#2d3b7c]" },
-  { height: "h-40", width: "w-5", glow: "via-[#ff7acb]" },
-  { height: "h-24", width: "w-4", glow: "via-[#0ea5e9]" },
-  { height: "h-48", width: "w-6", glow: "via-[#c084fc]" },
-  { height: "h-32", width: "w-5", glow: "via-[#22d3ee]" },
-  { height: "h-44", width: "w-4", glow: "via-[#fb7185]" },
-  { height: "h-[7.5rem]", width: "w-4", glow: "via-[#a855f7]" },
-  { height: "h-36", width: "w-6", glow: "via-[#7dd3fc]" },
-  { height: "h-[6.5rem]", width: "w-3", glow: "via-[#f472b6]" },
+  { height: "h-28", width: "w-4", glow: "via-[#DC143C]" },
+  { height: "h-36", width: "w-6", glow: "via-[#FFFFFF]" },
+  { height: "h-40", width: "w-5", glow: "via-[#DC143C]" },
+  { height: "h-24", width: "w-4", glow: "via-[#FFFFFF]" },
+  { height: "h-48", width: "w-6", glow: "via-[#DC143C]" },
+  { height: "h-32", width: "w-5", glow: "via-[#FFFFFF]" },
+  { height: "h-44", width: "w-4", glow: "via-[#DC143C]" },
+  { height: "h-[7.5rem]", width: "w-4", glow: "via-[#FFFFFF]" },
+  { height: "h-36", width: "w-6", glow: "via-[#DC143C]" },
+  { height: "h-[6.5rem]", width: "w-3", glow: "via-[#FFFFFF]" },
 ]
 
 
@@ -197,7 +135,7 @@ function WinterSnowfall() {
           >
             <SnowflakeSVG 
               size={size} 
-              className="text-cyan-200 drop-shadow-[0_0_4px_rgba(0,245,255,0.8)]" 
+              className="text-white drop-shadow-[0_0_4px_rgba(255,255,255,0.8)]" 
             />
           </motion.div>
         )
@@ -235,7 +173,7 @@ function WinterSnowfall() {
           >
             <SnowflakeSVG 
               size={size} 
-              className="text-blue-200 drop-shadow-[0_0_3px_rgba(59,130,246,0.6)]" 
+              className="text-ny-red-light drop-shadow-[0_0_3px_rgba(220,20,60,0.6)]" 
             />
           </motion.div>
         )
@@ -259,7 +197,7 @@ function WinterSnowfall() {
               width: `${size}px`,
               height: `${size}px`,
               background: 'radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(200,230,255,0.6) 100%)',
-              boxShadow: '0 0 6px rgba(0,245,255,0.4)',
+              boxShadow: '0 0 6px rgba(255,255,255,0.4)',
             }}
             initial={{ y: -5, opacity: 0 }}
             animate={{
@@ -361,16 +299,16 @@ export default function Landing() {
   return (
     <div className="relative min-h-screen bg-[#01040c] text-white overflow-hidden">
       <div className="pointer-events-none absolute inset-0 opacity-30">
-        <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(0,245,255,0.2),rgba(15,23,42,0.4),rgba(255,0,140,0.2))]" />
+        <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(220,20,60,0.2),rgba(15,23,42,0.4),rgba(255,255,255,0.1))]" />
       </div>
       <div className="pointer-events-none absolute inset-0 opacity-20 mix-blend-screen">
-        <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(0,255,153,0.1)_1px,transparent_1px)] bg-[length:30px_30px]" />
-        <div className="absolute inset-0 animate-pulse bg-[radial-gradient(circle,rgba(255,255,255,0.15)_1px,transparent_1px)] bg-[length:120px_120px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[length:30px_30px]" />
+        <div className="absolute inset-0 animate-pulse bg-[radial-gradient(circle,rgba(220,20,60,0.15)_1px,transparent_1px)] bg-[length:120px_120px]" />
       </div>
       <main className="relative">
         <section className="relative overflow-hidden bg-gradient-to-b from-[#000112] via-[#030313] to-[#020107]">
           <div className="absolute inset-0">
-            <div className="absolute inset-0 opacity-30 bg-[linear-gradient(160deg,rgba(0,255,153,0.15),transparent),linear-gradient(20deg,rgba(59,130,246,0.25),transparent)] blur-3xl" />
+            <div className="absolute inset-0 opacity-30 bg-[linear-gradient(160deg,rgba(220,20,60,0.15),transparent),linear-gradient(20deg,rgba(255,255,255,0.1),transparent)] blur-3xl" />
           </div>
           <div className="absolute inset-0 pointer-events-none">
             <WinterSnowfall />
@@ -380,7 +318,7 @@ export default function Landing() {
               {skylineBars.map((bar, idx) => (
                 <div
                   key={`skyline-${idx}`}
-                  className={`relative ${bar.width} ${bar.height} rounded-t-sm bg-gradient-to-t from-black ${bar.glow} to-white/30 shadow-[0_0_25px_rgba(56,189,248,0.35)]`}
+                  className={`relative ${bar.width} ${bar.height} rounded-t-sm bg-gradient-to-t from-black ${bar.glow} to-white/30 shadow-[0_0_25px_rgba(220,20,60,0.35)]`}
                 >
                   <span className="absolute inset-x-1 bottom-2 h-1 rounded-full bg-white/30" />
                 </div>
@@ -394,13 +332,13 @@ export default function Landing() {
               transition={{ duration: 0.8 }}
               className="max-w-4xl mx-auto text-center space-y-6"
             >
-              <div className="inline-flex items-center gap-3 rounded-full border border-white/15 bg-white/5 px-6 py-2 text-xs sm:text-sm uppercase tracking-[0.5em] text-cyber-cyan">
+              <div className="inline-flex items-center gap-3 rounded-full border border-ny-red/40 bg-gradient-to-r from-ny-red/20 via-white/10 to-ny-red/20 px-6 py-2 text-xs sm:text-sm uppercase tracking-[0.5em] text-white glow-white-text">
                 <span>Dataton 2025</span>
-                <span className="h-1 w-1 rounded-full bg-cyber-cyan" />
+                <span className="h-1 w-1 rounded-full bg-ny-red animate-pulse" />
                 <span>Yeni Yıl Ateşlemesi</span>
               </div>
               <h1 className="text-4xl md:text-6xl font-orbitron font-bold leading-tight">
-                <span className="text-cyber-cyan">KUVARS KALKANI</span> OPERASYONU
+                <span className="text-white glow-white-text">KUVARS KALKANI</span> OPERASYONU
                 <span className="block text-2xl md:text-3xl text-muted-foreground mt-4">
                   İstanbul silüetinin üzerinde parlayacak yılbaşı ateşlemesini korumak için son geri sayım.
                 </span>
@@ -409,24 +347,54 @@ export default function Landing() {
                 50+ elit ekip, gece yarısı 00:00:00&apos;da başlayacak küresel kutlamayı siber saldırılara karşı korumak için CTF + Datathon görevlerini eş zamanlı tamamlıyor.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Button size="lg" className="px-10 text-base glow-cyan animate-pulse">
+                <Button size="lg" className="px-10 text-base bg-gradient-to-r from-ny-red to-ny-red-light text-white font-bold glow-red hover:from-ny-red-light hover:to-ny-red transition-all duration-300 animate-pulse">
                   Yeni Yıl Ekibimi Kaydet
                 </Button>
-                <Button variant="outline" size="lg" className="px-10 text-base">
+                <Button variant="outline" size="lg" className="px-10 text-base border-white text-white hover:bg-white hover:text-ny-red glow-white">
                   Operasyon Manifestosu
                 </Button>
               </div>
             </motion.div>
+
+            {/* Sponsor Logoları - Üst Kısım - Yatay Animasyonlu */}
+            <div className="mt-12 rounded-[34px] border border-white/20 bg-gradient-to-br from-ny-red/10 via-black/30 to-white/5 p-6 backdrop-blur-lg overflow-hidden">
+              <div className="text-center mb-6">
+                <p className="text-sm uppercase tracking-[0.6em] text-white">Sponsorlar</p>
+                <h2 className="text-xl font-orbitron text-white mt-2">Görev Destekçileri</h2>
+              </div>
+              <div className="relative overflow-hidden">
+                <div className="flex gap-8 animate-scroll will-change-transform">
+                  {/* İlk set - normal */}
+                  {sponsors.map((sponsor, idx) => (
+                    <div
+                      key={`sponsor-top-1-${idx}`}
+                      className="flex-shrink-0 h-20 w-40 border border-white/20 rounded-xl bg-black/40 backdrop-blur flex items-center justify-center px-4 hover:border-ny-red/50 transition-all hover:scale-105"
+                    >
+                      <span className="text-white font-semibold text-base tracking-wider">{sponsor}</span>
+                    </div>
+                  ))}
+                  {/* İkinci set - animasyon için tekrar */}
+                  {sponsors.map((sponsor, idx) => (
+                    <div
+                      key={`sponsor-top-2-${idx}`}
+                      className="flex-shrink-0 h-20 w-40 border border-white/20 rounded-xl bg-black/40 backdrop-blur flex items-center justify-center px-4 hover:border-ny-red/50 transition-all hover:scale-105"
+                    >
+                      <span className="text-white font-semibold text-base tracking-wider">{sponsor}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
 
             <div className="mt-16 relative z-10" id="scoreboard">
               <h2 className="text-center font-orbitron text-lg text-muted-foreground tracking-[0.6em] mb-6">
                 Yeni Yıl Geri Sayımı
               </h2>
               <div className="relative max-w-3xl mx-auto">
-                <div className="absolute inset-0 blur-3xl bg-gradient-to-r from-cyber-cyan/30 via-cyber-purple/30 to-pink-400/30 opacity-70" />
-                <div className="relative rounded-[36px] border border-white/15 bg-gradient-to-br from-white/5 via-black/40 to-white/5 p-1 shadow-[0_0_35px_rgba(59,130,246,0.35)]">
-                  <div className="rounded-[30px] border border-white/10 bg-black/70 px-8 py-10 space-y-6">
-                    <p className="text-sm uppercase tracking-[0.5em] text-muted-foreground">00:00:00&apos;A KALAN SÜRE</p>
+                <div className="absolute inset-0 blur-3xl bg-gradient-to-r from-ny-red/40 via-white/20 to-ny-red/40 opacity-80" />
+                <div className="relative rounded-[36px] border border-white/40 bg-gradient-to-br from-ny-red/20 via-black/40 to-white/10 p-1 shadow-[0_0_35px_rgba(220,20,60,0.5),0_0_60px_rgba(255,255,255,0.3)]">
+                  <div className="rounded-[30px] border border-white/20 bg-black/70 px-8 py-10 space-y-6">
+                    <p className="text-sm uppercase tracking-[0.5em] text-white">00:00:00&apos;A KALAN SÜRE</p>
                     <CountdownTimer targetDate={targetDate} />
                     <p className="text-base text-muted-foreground">
                       Timer sıfırlandığında, şehir silüeti üzerinde koruyucu neon kalkan tetiklenecek ve yılbaşı havai fişekleri güvenli modda ateşlenecek.
@@ -436,16 +404,16 @@ export default function Landing() {
               </div>
               <div className="mt-10 grid gap-6 md:grid-cols-3">
                 {rewards.map((reward, idx) => (
-                  <Card key={reward.place} className="border-cyber-dark-secondary">
+                  <Card key={reward.place} className="border-white/30 bg-gradient-to-br from-black/50 to-black/30">
                     <CardHeader>
                       <div className="flex items-center justify-between">
-                        <div className="text-sm uppercase tracking-[0.4em] text-muted-foreground">
+                        <div className="text-sm uppercase tracking-[0.4em] text-white">
                           {reward.place} SIRALI
                         </div>
-                        <Award className="text-cyber-cyan" />
+                        <Award className="text-ny-red glow-red-text" />
                       </div>
                       <CardTitle className="text-2xl text-white">{reward.title}</CardTitle>
-                      <CardDescription className="text-cyber-cyan text-base">{reward.prize}</CardDescription>
+                      <CardDescription className="text-ny-red-light text-base font-semibold">{reward.prize}</CardDescription>
                     </CardHeader>
                     <CardContent>
                       <p className="text-sm text-muted-foreground">
@@ -459,10 +427,10 @@ export default function Landing() {
 
             <div
               id="teams"
-              className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] items-center rounded-[34px] border border-white/10 bg-white/5 p-8 backdrop-blur-lg"
+              className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] items-center rounded-[34px] border border-white/20 bg-gradient-to-br from-ny-red/10 via-black/30 to-white/5 p-8 backdrop-blur-lg"
             >
               <div className="space-y-6">
-                <p className="text-sm uppercase tracking-[0.6em] text-cyan-200/80">
+                <p className="text-sm uppercase tracking-[0.6em] text-white">
                   Görev Tanımı
                 </p>
                 <h2 className="text-3xl md:text-4xl font-orbitron text-white leading-tight">
@@ -473,8 +441,8 @@ export default function Landing() {
                 </p>
                 <div className="grid gap-4 sm:grid-cols-3">
                   {["CTF Sprintleri", "Datathon Akışı", "Canlı Leaderboard"].map((item, idx) => (
-                    <div key={item} className="rounded-2xl border border-white/10 bg-white/5 p-4 shadow-inner shadow-cyan-500/10">
-                      <p className="text-xs uppercase tracking-[0.4em] text-muted-foreground">Mod {idx + 1}</p>
+                    <div key={item} className="rounded-2xl border border-white/20 bg-gradient-to-br from-ny-red/10 via-black/30 to-white/5 p-4 shadow-inner shadow-ny-red/10">
+                      <p className="text-xs uppercase tracking-[0.4em] text-white">Mod {idx + 1}</p>
                       <p className="text-lg font-semibold text-white mt-2">{item}</p>
                       <p className="text-xs text-muted-foreground mt-2">
                         {idx === 0 && "Gölge'nin geride bıraktığı parazitli portalları sök."}
@@ -485,8 +453,8 @@ export default function Landing() {
                   ))}
                 </div>
               </div>
-              <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-white/5 via-black/50 to-white/5 p-8 shadow-[0_10px_60px_rgba(14,165,233,0.25)]">
-                <p className="text-sm uppercase tracking-[0.5em] text-muted-foreground">Hızlı Bilgiler</p>
+              <div className="rounded-3xl border border-white/30 bg-gradient-to-br from-ny-red/15 via-black/50 to-white/10 p-8 shadow-[0_10px_60px_rgba(220,20,60,0.3)]">
+                <p className="text-sm uppercase tracking-[0.5em] text-white">Hızlı Bilgiler</p>
                 <div className="mt-6 space-y-4">
                   <div className="flex items-center justify-between">
                     <span className="text-muted-foreground">Takvim</span>
@@ -498,12 +466,12 @@ export default function Landing() {
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-muted-foreground">Format</span>
-                    <span className="font-semibold text-cyber-cyan">CTF + Datathon</span>
+                    <span className="font-semibold text-ny-red">CTF + Datathon</span>
                   </div>
                 </div>
                 <div className="mt-8 text-sm text-muted-foreground">
                   CrewCTF 2025&apos;in blok yerleşimi ve tek sayfa enerjisinden ilham alan ({` `}
-                  <a href="https://2025.crewc.tf/" className="text-cyber-cyan underline" target="_blank" rel="noreferrer">
+                  <a href="https://2025.crewc.tf/" className="text-ny-red underline hover:text-ny-red-light transition-colors" target="_blank" rel="noreferrer">
                     crewctf
                   </a>
                   ) dijital neon katmanları burada yılbaşı atmosferine uyarladı.
@@ -511,40 +479,16 @@ export default function Landing() {
               </div>
             </div>
 
-            <div id="challenges" className="space-y-12 rounded-[34px] border border-white/10 bg-white/5 p-8 backdrop-blur-lg">
-              <p className="text-sm uppercase tracking-[0.6em] text-center text-cyan-200/70">Operasyon Aşamaları</p>
-              <div className="grid gap-6 md:grid-cols-2">
-                {stages.map(stage => (
-                  <div key={stage.title} className="rounded-2xl border border-white/10 bg-black/30 p-6 backdrop-blur-md">
-                    <div className="flex items-center justify-between text-xs uppercase tracking-[0.4em] text-muted-foreground">
-                      <span>{stage.name}</span>
-                      <span className="text-cyber-cyan">{stage.type}</span>
-                    </div>
-                    <h3 className="text-2xl font-semibold text-white mt-3">{stage.title}</h3>
-                    <p className="text-sm text-muted-foreground mt-2">{stage.description}</p>
-                    <div className="mt-4 text-sm space-y-1">
-                      <p className="text-cyber-purple font-medium">Flag / İpucu</p>
-                      <p className="text-muted-foreground">{stage.flag}</p>
-                    </div>
-                    <div className="mt-4 text-sm space-y-1">
-                      <p className="text-cyber-cyan font-medium">Kilit Açma</p>
-                      <p className="text-muted-foreground">{stage.unlocks}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-12 rounded-[34px] border border-white/10 bg-white/5 p-8 backdrop-blur-lg">
+            <div className="space-y-12 rounded-[34px] border border-white/20 bg-gradient-to-br from-ny-red/10 via-black/30 to-white/5 p-8 backdrop-blur-lg">
               <div className="text-center">
-                <p className="text-sm uppercase tracking-[0.6em] text-muted-foreground">Jüri</p>
+                <p className="text-sm uppercase tracking-[0.6em] text-white">Jüri</p>
                 <h2 className="text-3xl font-orbitron text-white mt-3">Operasyon Konseyi</h2>
               </div>
               <div className="grid gap-8 md:grid-cols-3">
                 {juryMembers.map(member => (
-                  <Card key={member.name} className="border-white/10 bg-black/30 text-center backdrop-blur-md">
+                  <Card key={member.name} className="border-white/20 bg-black/40 text-center backdrop-blur-md">
                     <CardHeader>
-                      <div className="mx-auto h-20 w-20 rounded-full bg-gradient-to-br from-cyber-cyan to-cyber-purple flex items-center justify-center text-2xl font-bold">
+                      <div className="mx-auto h-20 w-20 rounded-full bg-gradient-to-br from-ny-red to-white flex items-center justify-center text-2xl font-bold text-white shadow-[0_0_20px_rgba(220,20,60,0.6)]">
                         {member.name.split(" ").map(n => n[0]).join("").slice(0, 2)}
                       </div>
                       <CardTitle className="mt-4 text-white">{member.name}</CardTitle>
@@ -555,45 +499,50 @@ export default function Landing() {
               </div>
             </div>
 
-            <div className="space-y-10 rounded-[34px] border border-white/10 bg-white/5 p-8 backdrop-blur-lg">
-              <div className="text-center">
-                <p className="text-sm uppercase tracking-[0.6em] text-muted-foreground">Sponsorlar</p>
-                <h2 className="text-3xl font-orbitron text-white mt-3">Görev Destekçileri</h2>
-              </div>
-              <div className="grid md:grid-cols-4 gap-6">
-                {sponsors.map(sponsor => (
-                  <div key={sponsor} className="border border-white/10 rounded-2xl p-6 text-center text-lg font-semibold text-muted-foreground tracking-widest bg-black/30 backdrop-blur">
-                    {sponsor}
-                  </div>
-                ))}
-              </div>
-              <div className="grid md:grid-cols-2 gap-6">
-                {extraCtfIdeas.map(idea => (
-                  <div key={idea.title} className="rounded-2xl border border-white/10 p-6 bg-black/30 backdrop-blur">
-                    <p className="text-sm uppercase tracking-[0.4em] text-muted-foreground mb-2">
-                      Ek Görev Fikrİ
-                    </p>
-                    <h3 className="text-2xl font-semibold text-white">{idea.title}</h3>
-                    <p className="text-muted-foreground mt-2">{idea.text}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="rounded-[34px] border border-white/10 bg-black/30 p-10 text-center backdrop-blur-lg">
-              <p className="text-sm uppercase tracking-[0.6em] text-muted-foreground">Platform Tasarımcısı</p>
+            <div className="rounded-[34px] border border-white/30 bg-black/40 p-10 text-center backdrop-blur-lg">
+              <p className="text-sm uppercase tracking-[0.6em] text-white">Platform Tasarımcısı</p>
               <h2 className="text-3xl font-orbitron text-white mt-3">{maker.name}</h2>
-              <p className="text-lg text-cyber-cyan mt-2">{maker.role}</p>
+              <p className="text-lg text-ny-red mt-2 glow-red-text">{maker.role}</p>
               <p className="text-muted-foreground mt-4">{maker.bio}</p>
               <div className="mt-6 flex items-center justify-center gap-4 flex-wrap">
                 {maker.social.map(item => (
-                  <Button key={item.label} variant="outline" className="flex items-center gap-2" asChild>
+                  <Button key={item.label} variant="outline" className="flex items-center gap-2 border-white text-white hover:bg-white hover:text-ny-red transition-all" asChild>
                     <a href={item.href} target="_blank" rel="noreferrer">
                       <item.icon className="h-4 w-4" />
                       {item.label}
                     </a>
                   </Button>
                 ))}
+              </div>
+            </div>
+
+            {/* Sponsor Logoları - Yatay Animasyonlu */}
+            <div className="mt-12 rounded-[34px] border border-white/20 bg-gradient-to-br from-ny-red/10 via-black/30 to-white/5 p-8 backdrop-blur-lg overflow-hidden">
+              <div className="text-center mb-8">
+                <p className="text-sm uppercase tracking-[0.6em] text-white">Sponsorlar</p>
+                <h2 className="text-2xl font-orbitron text-white mt-2">Görev Destekçileri</h2>
+              </div>
+              <div className="relative overflow-hidden">
+                <div className="flex gap-8 animate-scroll will-change-transform">
+                  {/* İlk set - normal */}
+                  {sponsors.map((sponsor, idx) => (
+                    <div
+                      key={`sponsor-1-${idx}`}
+                      className="flex-shrink-0 h-24 w-48 border border-white/20 rounded-xl bg-black/40 backdrop-blur flex items-center justify-center px-6 hover:border-ny-red/50 transition-all hover:scale-105"
+                    >
+                      <span className="text-white font-semibold text-lg tracking-wider">{sponsor}</span>
+                    </div>
+                  ))}
+                  {/* İkinci set - animasyon için tekrar */}
+                  {sponsors.map((sponsor, idx) => (
+                    <div
+                      key={`sponsor-2-${idx}`}
+                      className="flex-shrink-0 h-24 w-48 border border-white/20 rounded-xl bg-black/40 backdrop-blur flex items-center justify-center px-6 hover:border-ny-red/50 transition-all hover:scale-105"
+                    >
+                      <span className="text-white font-semibold text-lg tracking-wider">{sponsor}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

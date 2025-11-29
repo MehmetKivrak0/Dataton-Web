@@ -5,7 +5,7 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-cyber-dark text-white p-4 sm:p-6 md:p-8">
       <div className="container mx-auto">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-orbitron font-bold mb-6 sm:mb-8 glow-cyan-text">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-orbitron font-bold mb-6 sm:mb-8 glow-white-text">
           Dashboard
         </h1>
         
@@ -16,7 +16,7 @@ export default function Dashboard() {
               <CardDescription>Tamamlanan aşamalar</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-2xl font-bold text-cyber-cyan">0/6</p>
+              <p className="text-2xl font-bold text-ny-red">0/6</p>
             </CardContent>
           </Card>
 
@@ -26,7 +26,7 @@ export default function Dashboard() {
               <CardDescription>Genel sıralama</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-2xl font-bold text-cyber-purple">-</p>
+              <p className="text-2xl font-bold text-white">-</p>
             </CardContent>
           </Card>
 

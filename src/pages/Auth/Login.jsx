@@ -40,7 +40,7 @@ export default function Login() {
         style: {
           background: '#1a1f3a',
           color: '#fff',
-          border: '1px solid #00d9ff',
+          border: '1px solid #DC143C',
         },
       })
       
@@ -73,7 +73,7 @@ export default function Login() {
         {/* Back Button */}
         <Link
           to="/"
-          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-cyber-cyan transition-colors mb-6"
+          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-ny-red transition-colors mb-6"
         >
           <ArrowLeft className="h-4 w-4" />
           Ana Sayfaya Dön
@@ -83,12 +83,12 @@ export default function Login() {
         <Card className="bg-black/30 border-white/10 backdrop-blur-md">
           <CardHeader className="space-y-1 text-center">
             <div className="flex justify-center mb-4">
-              <div className="h-16 w-16 rounded-full bg-gradient-to-br from-cyber-cyan to-cyber-purple flex items-center justify-center">
+              <div className="h-16 w-16 rounded-full bg-gradient-to-br from-ny-red to-white flex items-center justify-center">
                 <LogIn className="h-8 w-8 text-white" />
               </div>
             </div>
             <CardTitle className="text-2xl font-orbitron text-white">
-              <span className="text-cyber-cyan">KUVARS KALKANI</span> DATATON
+              <span className="text-ny-red">KUVARS KALKANI</span> DATATON
             </CardTitle>
             <CardDescription className="text-base">
               Hesabınıza giriş yapın
@@ -102,12 +102,12 @@ export default function Login() {
                   E-posta
                 </label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-cyber-cyan" />
+                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-ny-red" />
                   <Input
                     id="email"
                     type="email"
                     placeholder="ornek@email.com"
-                    className="pl-10 bg-black/30 border-white/10 text-white placeholder:text-muted-foreground focus-visible:border-cyber-cyan"
+                    className="pl-10 bg-black/30 border-ny-red/40 text-white placeholder:text-muted-foreground focus-visible:border-ny-red focus-visible:ring-2 focus-visible:ring-ny-red/50 shadow-[0_0_10px_rgba(220,20,60,0.3)]"
                     {...register("email")}
                   />
                 </div>
@@ -122,18 +122,18 @@ export default function Login() {
                   Şifre
                 </label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-cyber-cyan" />
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-ny-red" />
                   <Input
                     id="password"
                     type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
-                    className="pl-10 pr-10 bg-black/30 border-white/10 text-white placeholder:text-muted-foreground focus-visible:border-cyber-cyan"
+                    className="pl-10 pr-10 bg-black/30 border-ny-red/40 text-white placeholder:text-muted-foreground focus-visible:border-ny-red focus-visible:ring-2 focus-visible:ring-ny-red/50 shadow-[0_0_10px_rgba(220,20,60,0.3)]"
                     {...register("password")}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-cyber-cyan transition-colors"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-ny-red transition-colors"
                   >
                     {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
@@ -147,7 +147,7 @@ export default function Login() {
               <div className="flex items-center justify-end">
                 <Link
                   to="/auth/forgot-password"
-                  className="text-xs text-cyber-cyan hover:underline"
+                  className="text-xs text-ny-red hover:underline"
                 >
                   Şifremi Unuttum
                 </Link>
@@ -156,7 +156,7 @@ export default function Login() {
               {/* Submit Button */}
               <Button
                 type="submit"
-                className="w-full bg-gradient-to-r from-cyber-cyan to-cyber-purple hover:from-cyber-cyan/90 hover:to-cyber-purple/90 text-black font-semibold"
+                className="w-full bg-gradient-to-r from-ny-red to-white hover:from-ny-red/90 hover:to-white/90 text-black font-semibold shadow-[0_0_15px_rgba(220,20,60,0.4)] hover:shadow-[0_0_20px_rgba(220,20,60,0.6)] transition-all"
                 disabled={isLoading}
               >
                 {isLoading ? "Giriş yapılıyor..." : "Giriş Yap"}
@@ -167,7 +167,7 @@ export default function Login() {
                 Hesabınız yok mu?{" "}
                 <Link
                   to="/auth/register"
-                  className="text-cyber-cyan hover:underline font-medium"
+                  className="text-ny-red hover:underline font-medium"
                 >
                   Kayıt Ol
                 </Link>

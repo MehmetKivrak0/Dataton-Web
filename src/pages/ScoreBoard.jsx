@@ -1,7 +1,10 @@
 import { useState, useMemo, useEffect, useRef } from "react"
-import { Search, X, RefreshCw } from "lucide-react"
+import { Search, X, RefreshCw, Users, Download, GitCompare, Check } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts"
 import toast from "react-hot-toast"
 
 // Örnek skor verileri - gerçek veriler API'den gelecek
@@ -67,11 +70,75 @@ function getTotalScore(teamId) {
   return stages.reduce((total, stage) => total + getScore(teamId, stage.id), 0)
 }
 
+// Örnek takım üyesi katkı verileri - gerçek veriler API'den gelecek
+const teamMemberContributions = {
+  1: [
+    { name: "ShadowX", contributions: 45 },
+    { name: "NeonHacker", contributions: 30 },
+    { name: "CyberGhost", contributions: 15 },
+    { name: "DarkByte", contributions: 10 },
+  ],
+  2: [
+    { name: "CipherMaster", contributions: 50 },
+    { name: "CodeBreaker", contributions: 30 },
+    { name: "EncryptPro", contributions: 20 },
+  ],
+  3: [
+    { name: "TimeKeeper", contributions: 40 },
+    { name: "ChronoHack", contributions: 30 },
+    { name: "TempusPro", contributions: 20 },
+    { name: "GuardianX", contributions: 10 },
+  ],
+}
+
+// Tüm takımların üyelerini birleştirip skorlarıyla eşleştir
+const allMemberScores = [
+  { name: "Manpreet", score: 0 },
+  { name: "newkidcrazy", score: 0 },
+  { name: "noahnescio", score: 1900 },
+  { name: "ShadowX", score: 1250 },
+  { name: "NeonHacker", score: 850 },
+  { name: "CyberGhost", score: 450 },
+  { name: "DarkByte", score: 320 },
+  { name: "CipherMaster", score: 750 },
+  { name: "CodeBreaker", score: 590 },
+  { name: "EncryptPro", score: 410 },
+  { name: "TimeKeeper", score: 520 },
+  { name: "ChronoHack", score: 380 },
+  { name: "TempusPro", score: 250 },
+  { name: "GuardianX", score: 100 },
+]
+
+// Örnek çözüm istatistikleri - gerçek veriler API'den gelecek
+const solveStatistics = {
+  solves: 12,
+  fails: 11,
+  total: 23,
+}
+
+// Örnek kategori dağılımı - gerçek veriler API'den gelecek
+const categoryBreakdown = [
+  { name: "OSINT", value: 5, percentage: 41.67 },
+  { name: "Reverse Engineering", value: 5, percentage: 41.67 },
+  { name: "Cryptography", value: 1, percentage: 8.33 },
+  { name: "Forensics", value: 1, percentage: 8.33 },
+]
+
+// Grafik renkleri
+const CHART_COLORS = {
+  solve: "#10b981", // Yeşil
+  fail: "#ef4444", // Kırmızı
+  categories: ["#ec4899", "#10b981", "#06b6d4", "#ef4444"], // Magenta, Yeşil, Cyan, Kırmızı
+}
+
 export default function ScoreBoard() {
   const [searchQuery, setSearchQuery] = useState("")
   const [lastRefreshTime, setLastRefreshTime] = useState(Date.now())
   const [refreshKey, setRefreshKey] = useState(0)
   const [isRefreshing, setIsRefreshing] = useState(false)
+  const [selectedTeams, setSelectedTeams] = useState([])
+  const [isCompareDialogOpen, setIsCompareDialogOpen] = useState(false)
+  const [isSelectionMode, setIsSelectionMode] = useState(false)
   const refreshIntervalRef = useRef(null)
 
   // Filtrelenmiş takımlar
@@ -136,7 +203,7 @@ export default function ScoreBoard() {
           style: {
             background: '#1a1f3a',
             color: '#fff',
-            border: '1px solid #00d9ff',
+            border: '1px solid #DC143C',
           },
         })
       }, 1000)
@@ -170,7 +237,7 @@ export default function ScoreBoard() {
           {/* Header */}
           <div className="mb-6 sm:mb-8">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-orbitron font-bold text-white mb-2">
-              <span className="text-cyber-cyan">KUVARS KALKANI</span> SCOREBOARD
+              <span className="text-ny-red">KUVARS KALKANI</span> SCOREBOARD
             </h1>
             <p className="text-sm sm:text-base text-muted-foreground">Takım Skorları ve Aşama İlerlemeleri</p>
           </div>
@@ -179,33 +246,141 @@ export default function ScoreBoard() {
           <div className="mb-4 sm:mb-6">
             <div className="flex items-center gap-3 flex-wrap justify-between">
               <div className="relative flex-1 min-w-[200px] max-w-md">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-ny-red" />
                 <Input
                   type="text"
                   placeholder="Takım adı veya organizasyon ara..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 pr-10 bg-black/30 border-white/10 text-white placeholder:text-muted-foreground"
+                  className="pl-10 pr-10 bg-black/30 border-ny-red/40 text-white placeholder:text-muted-foreground focus-visible:border-ny-red focus-visible:ring-2 focus-visible:ring-ny-red/50 shadow-[0_0_10px_rgba(220,20,60,0.3)]"
                 />
                 {searchQuery && (
                   <button
                     onClick={clearSearch}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-white transition-colors"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-ny-red transition-colors"
                   >
                     <X className="h-4 w-4" />
                   </button>
                 )}
               </div>
-              <Button
-                onClick={() => refreshScoreboard(true)}
-                size="sm"
-                variant="outline"
-                disabled={isRefreshing}
-                className="flex items-center gap-2 border-white/10 hover:bg-cyber-cyan/20 hover:text-cyber-cyan hover:border-cyber-cyan/50 transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-                <span className="text-xs sm:text-sm">Yenile</span>
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => {
+                    if (selectedTeams.length === 0) {
+                      // İlk tıklamada: Bildirim göster, seçim modu aktif olur, modal açılmaz
+                      setIsSelectionMode(true)
+                      toast.success("Takım seçiniz. Tablodan takım seçebilirsiniz.", {
+                        duration: 3000,
+                        style: {
+                          background: '#1a1f3a',
+                          color: '#fff',
+                          border: '1px solid #DC143C',
+                        },
+                      })
+                    } else {
+                      // Takım seçildikten sonra: Karşılaştırma modalı açılır
+                      setIsCompareDialogOpen(true)
+                    }
+                  }}
+                  className={`flex items-center gap-2 border-ny-red/50 text-white hover:bg-ny-red/20 hover:text-ny-red hover:border-ny-red transition-colors whitespace-nowrap shadow-[0_0_10px_rgba(220,20,60,0.3)] hover:shadow-[0_0_15px_rgba(220,20,60,0.5)] ${isSelectionMode ? 'bg-ny-red/20 border-ny-red' : ''}`}
+                >
+                  <GitCompare className="h-4 w-4" />
+                  <span className="text-xs sm:text-sm">Karşılaştır</span>
+                  {selectedTeams.length > 0 && (
+                    <span className="ml-1 px-1.5 py-0.5 rounded-full bg-ny-red text-white text-xs font-bold">
+                      {selectedTeams.length}
+                    </span>
+                  )}
+                </Button>
+                <Dialog open={isCompareDialogOpen} onOpenChange={setIsCompareDialogOpen}>
+                  <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto bg-black/95 border-ny-red/30">
+                    <DialogHeader>
+                      <DialogTitle className="flex items-center gap-2 text-2xl text-white">
+                        <GitCompare className="h-6 w-6 text-ny-red" />
+                        Takım Karşılaştırması
+                      </DialogTitle>
+                    </DialogHeader>
+                    <div className="mt-4">
+                      {selectedTeams.length > 0 ? (
+                        <div className="space-y-4">
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            {selectedTeams.map((teamId) => {
+                              const team = allTeams.find(t => t.id === teamId)
+                              const totalScore = getTotalScore(teamId)
+                              return team ? (
+                                <Card key={teamId} className="bg-white/5 border-white/10">
+                                  <CardContent className="p-4">
+                                    <div className="flex items-center justify-between mb-2">
+                                      <h3 className="text-sm font-semibold text-white">{team.name}</h3>
+                                      <button
+                                        onClick={() => setSelectedTeams(prev => prev.filter(id => id !== teamId))}
+                                        className="text-muted-foreground hover:text-ny-red transition-colors"
+                                      >
+                                        <X className="h-4 w-4" />
+                                      </button>
+                                    </div>
+                                    {team.organization && (
+                                      <p className="text-xs text-muted-foreground mb-2">{team.organization}</p>
+                                    )}
+                                    <p className="text-2xl font-bold text-white">{totalScore}</p>
+                                    <p className="text-xs text-muted-foreground mt-1">Toplam Puan</p>
+                                  </CardContent>
+                                </Card>
+                              ) : null
+                            })}
+                          </div>
+                          {selectedTeams.length < 3 && (
+                            <div className="text-center py-4 border-t border-white/10">
+                              <p className="text-sm text-muted-foreground mb-2">
+                                Daha fazla takım seçmek için tablodan seçin (Maksimum 3 takım)
+                              </p>
+                              {isSelectionMode && (
+                                <p className="text-xs text-ny-red/80">
+                                  Seçim modu aktif. Tablodan takım seçebilirsiniz.
+                                </p>
+                              )}
+                            </div>
+                          )}
+                          <div className="flex items-center justify-center gap-2 pt-4 border-t border-white/10">
+                            <Button
+                              onClick={() => {
+                                setIsSelectionMode(false)
+                                setSelectedTeams([])
+                                setIsCompareDialogOpen(false)
+                              }}
+                              variant="outline"
+                              size="sm"
+                              className="border-white/20 text-white hover:bg-white/10"
+                            >
+                              Seçimleri Temizle
+                            </Button>
+                            <Button
+                              onClick={() => setIsSelectionMode(false)}
+                              variant="outline"
+                              size="sm"
+                              className="border-ny-red/50 text-ny-red hover:bg-ny-red/20"
+                            >
+                              Seçim Modunu Kapat
+                            </Button>
+                          </div>
+                        </div>
+                      ) : null}
+                    </div>
+                  </DialogContent>
+                </Dialog>
+                <Button
+                  onClick={() => refreshScoreboard(true)}
+                  size="sm"
+                  variant="outline"
+                  disabled={isRefreshing}
+                  className="flex items-center gap-2 border-ny-red/50 text-white hover:bg-ny-red/20 hover:text-ny-red hover:border-ny-red transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed shadow-[0_0_10px_rgba(220,20,60,0.3)] hover:shadow-[0_0_15px_rgba(220,20,60,0.5)]"
+                >
+                  <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+                  <span className="text-xs sm:text-sm">Yenile</span>
+                </Button>
+              </div>
             </div>
             {searchQuery && (
               <p className="mt-2 text-sm text-muted-foreground">
@@ -217,27 +392,16 @@ export default function ScoreBoard() {
           {/* Scoreboard Table */}
           <div className="rounded-lg border border-white/10 bg-black/30 backdrop-blur-md overflow-hidden">
             <div className="w-full overflow-x-auto">
-              <table className="w-full table-auto min-w-[800px]">
+              <table className="w-full table-auto">
                 <thead>
                   <tr className="bg-white/5 border-b border-white/10">
-                    <th className="px-2 sm:px-4 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold text-muted-foreground uppercase tracking-wider w-12 sm:w-16">
+                    <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold text-white uppercase tracking-wider w-12 sm:w-16">
                       #
                     </th>
-                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold text-muted-foreground uppercase tracking-wider min-w-[150px] sm:w-[220px]">
+                    <th className="px-4 sm:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold text-white uppercase tracking-wider">
                       TAKIM
                     </th>
-                    {stages.map((stage) => (
-                      <th
-                        key={stage.id}
-                        className="px-2 sm:px-4 py-3 sm:py-4 text-center text-[10px] sm:text-xs font-semibold text-muted-foreground uppercase tracking-wider min-w-[120px] sm:min-w-[140px]"
-                      >
-                        <div className="flex flex-col items-center gap-0.5 sm:gap-1">
-                          <span className="text-[10px] sm:text-[11px] leading-tight">{stage.name}</span>
-                          <span className="text-[8px] sm:text-[9px] text-cyber-cyan/80 leading-tight">({stage.type})</span>
-                        </div>
-                      </th>
-                    ))}
-                    <th className="px-3 sm:px-6 py-3 sm:py-4 text-center text-xs sm:text-sm font-semibold text-cyber-cyan uppercase tracking-wider w-20 sm:w-32">
+                    <th className="px-4 sm:px-6 py-3 sm:py-4 text-right text-xs sm:text-sm font-semibold text-white uppercase tracking-wider w-24 sm:w-32">
                       TOPLAM
                     </th>
                   </tr>
@@ -249,16 +413,50 @@ export default function ScoreBoard() {
                       return (
                         <tr
                           key={team.id}
-                          className={`hover:bg-white/5 transition-colors ${
+                          className={`hover:bg-white/5 transition-colors cursor-pointer ${
                             index % 2 === 0 ? "bg-white/2" : "bg-transparent"
-                          }`}
+                          } ${selectedTeams.includes(team.id) ? "bg-ny-red/10 border-l-2 border-ny-red" : ""}`}
+                          onClick={() => {
+                            if (!isSelectionMode) {
+                              return
+                            }
+                            if (selectedTeams.includes(team.id)) {
+                              setSelectedTeams(prev => prev.filter(id => id !== team.id))
+                            } else {
+                              if (selectedTeams.length < 3) {
+                                setSelectedTeams(prev => [...prev, team.id])
+                                toast.success(`${team.name} seçildi`, {
+                                  duration: 2000,
+                                  style: {
+                                    background: '#1a1f3a',
+                                    color: '#fff',
+                                    border: '1px solid #DC143C',
+                                  },
+                                })
+                              } else {
+                                toast.error("Maksimum 3 takım seçebilirsiniz", {
+                                  duration: 2000,
+                                  style: {
+                                    background: '#1a1f3a',
+                                    color: '#fff',
+                                    border: '1px solid #ef4444',
+                                  },
+                                })
+                              }
+                            }
+                          }}
                         >
-                          <td className="px-2 sm:px-4 py-3 sm:py-4 whitespace-nowrap">
-                            <span className="text-xs sm:text-sm font-medium text-muted-foreground">
-                              {index + 1}
-                            </span>
+                          <td className="px-4 sm:px-6 py-3 sm:py-4 whitespace-nowrap">
+                            <div className="flex items-center gap-2">
+                              {selectedTeams.includes(team.id) && (
+                                <Check className="h-4 w-4 text-ny-red" />
+                              )}
+                              <span className="text-xs sm:text-sm font-medium text-muted-foreground">
+                                {index + 1}
+                              </span>
+                            </div>
                           </td>
-                          <td className="px-3 sm:px-6 py-3 sm:py-4">
+                          <td className="px-4 sm:px-6 py-3 sm:py-4">
                             <div className="flex flex-col">
                               <span className="text-xs sm:text-sm font-medium text-white">
                                 {team.name}
@@ -270,25 +468,8 @@ export default function ScoreBoard() {
                               )}
                             </div>
                           </td>
-                          {stages.map((stage) => {
-                            const score = getScore(team.id, stage.id)
-                            return (
-                              <td
-                                key={stage.id}
-                                className="px-2 sm:px-4 py-3 sm:py-4 text-center"
-                              >
-                                {score > 0 ? (
-                                  <span className="text-xs sm:text-sm font-semibold text-cyber-cyan">
-                                    {score}
-                                  </span>
-                                ) : (
-                                  <span className="text-xs sm:text-sm text-muted-foreground/50">-</span>
-                                )}
-                              </td>
-                            )
-                          })}
-                          <td className="px-3 sm:px-6 py-3 sm:py-4 text-center">
-                            <span className="text-sm sm:text-base font-bold text-cyber-cyan">
+                          <td className="px-4 sm:px-6 py-3 sm:py-4 text-right">
+                            <span className="text-sm sm:text-base font-bold text-white">
                               {totalScore}
                             </span>
                           </td>
@@ -298,7 +479,7 @@ export default function ScoreBoard() {
                   ) : (
                     <tr>
                       <td
-                        colSpan={stages.length + 3}
+                        colSpan={3}
                         className="px-6 py-12 text-center"
                       >
                         <p className="text-muted-foreground">

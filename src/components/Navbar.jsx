@@ -5,9 +5,9 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 
 const navItems = [
+  { label: "Challenges", href: "/challenges" },
   { label: "Teams", href: "/team" },
   { label: "Scoreboard", href: "/scoreboard" },
-  { label: "Challenges", href: "/#challenges" },
 ]
 
 export function Navbar() {
@@ -27,20 +27,20 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50">
-      {/* Cyan Banner - Kayıt Ol */}
-      <div className="relative overflow-hidden bg-[#01040c] border-b border-[#00FFFF]/30 shadow-[0_4px_20px_rgba(0,255,255,0.4)]">
+      {/* Red Banner - Kayıt Ol */}
+      <div className="relative overflow-hidden bg-[#01040c] border-b border-ny-red/30 shadow-[0_4px_20px_rgba(220,20,60,0.4)]">
         {/* Tam opak gradient katmanı - arkadaki içeriğin görünmesini engeller */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#00FFFF] via-[#00E5FF] to-[#00FFFF]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#DC143C] via-[#FF6B6B] to-[#DC143C]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.1),transparent_60%)] opacity-20" />
         <div className="relative container mx-auto px-4 flex flex-col sm:flex-row items-center justify-center gap-3 text-xs sm:text-sm font-semibold tracking-wide py-2.5 z-10">
           <span className="flex items-center gap-2 text-[#01040c] font-bold drop-shadow-[0_2px_4px_rgba(255,255,255,0.3)]">
-            <span className="h-2 w-2 rounded-full bg-[#01040c] animate-pulse shadow-[0_0_8px_rgba(0,255,255,0.8)]" />
+            <span className="h-2 w-2 rounded-full bg-[#01040c] animate-pulse shadow-[0_0_8px_rgba(220,20,60,0.8)]" />
             Kuvars Kalkanı Datatonu 31 Aralık 2025&apos;te başlıyor
           </span>
           <Button
             asChild
             size="sm"
-            className="bg-[#01040c] text-[#00FFFF] hover:bg-[#00FFFF] hover:text-[#01040c] border border-[#00FFFF] px-5 py-1.5 h-7 text-xs sm:text-sm rounded-full shadow-[0_0_18px_rgba(0,255,255,0.8)] font-bold transition-all duration-300"
+            className="bg-[#01040c] text-ny-red hover:bg-ny-red hover:text-[#01040c] border border-ny-red px-5 py-1.5 h-7 text-xs sm:text-sm rounded-full shadow-[0_0_18px_rgba(220,20,60,0.8)] font-bold transition-all duration-300"
           >
             <Link to="/auth/register">Kayıt Ol</Link>
           </Button>
@@ -50,13 +50,13 @@ export function Navbar() {
       {/* Main Navigation */}
       <nav className="relative bg-[#01040c] border-b border-white/10 shadow-[0_2px_10px_rgba(0,0,0,0.5)]">
         {/* Subtle glow effect */}
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyber-cyan/3 to-transparent opacity-30" />
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-ny-red/3 to-transparent opacity-30" />
         
         <div className="relative container mx-auto px-4 lg:px-6">
           <div className="relative flex items-center justify-center h-16">
             {/* Left: Logo - Absolute positioning */}
             <div className="absolute left-4 lg:left-6 flex items-center flex-shrink-0">
-              <Link to="/" className="text-white text-lg md:text-xl font-semibold tracking-tight hover:text-cyber-cyan transition-colors">
+              <Link to="/" className="text-white text-lg md:text-xl font-semibold tracking-tight hover:text-ny-red transition-colors">
                 Dataton 2025
               </Link>
             </div>
@@ -80,7 +80,7 @@ export function Navbar() {
                     }}
                   >
                     {item.label}
-                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-cyber-cyan transition-all group-hover:w-full" />
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-ny-red transition-all group-hover:w-full" />
                   </a>
                 ) : (
                   <Link
@@ -89,7 +89,7 @@ export function Navbar() {
                     className="text-muted-foreground hover:text-white transition-colors text-sm lg:text-base relative group"
                   >
                     {item.label}
-                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-cyber-cyan transition-all group-hover:w-full" />
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-ny-red transition-all group-hover:w-full" />
                   </Link>
                 )
               ))}
@@ -99,7 +99,7 @@ export function Navbar() {
             <div className="absolute right-4 lg:right-6 flex items-center gap-4">
               <Link
                 to="/auth/login"
-                className="flex items-center gap-2 text-white hover:text-cyber-cyan transition-colors text-sm lg:text-base group"
+                className="flex items-center gap-2 text-white hover:text-ny-red transition-colors text-sm lg:text-base group"
               >
                 <LogIn className="w-4 h-4 lg:w-5 lg:h-5 group-hover:translate-x-0.5 transition-transform" />
                 <span className="hidden sm:inline">Giriş Yap</span>
@@ -107,7 +107,7 @@ export function Navbar() {
               
               {/* Mobile Menu Button */}
               <button
-                className="md:hidden text-white hover:text-cyber-cyan transition-colors ml-2"
+                className="md:hidden text-white hover:text-ny-red transition-colors ml-2"
                 onClick={() => setOpen(prev => !prev)}
                 aria-label="menu"
               >
@@ -131,7 +131,7 @@ export function Navbar() {
               <a
                 key={item.href}
                 href={item.href}
-                className="text-muted-foreground hover:text-cyber-cyan transition-colors py-2 border-b border-white/5 last:border-0"
+                className="text-muted-foreground hover:text-ny-red transition-colors py-2 border-b border-white/5 last:border-0"
                 onClick={(e) => {
                   setOpen(false)
                   e.preventDefault()
@@ -149,7 +149,7 @@ export function Navbar() {
               <Link
                 key={item.href}
                 to={item.href}
-                className="text-muted-foreground hover:text-cyber-cyan transition-colors py-2 border-b border-white/5 last:border-0"
+                className="text-muted-foreground hover:text-ny-red transition-colors py-2 border-b border-white/5 last:border-0"
                 onClick={() => setOpen(false)}
               >
                 {item.label}

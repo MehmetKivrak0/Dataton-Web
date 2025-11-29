@@ -48,6 +48,13 @@ export default {
           dark: "#0a0e27",
           "dark-secondary": "#1a1f3a",
         },
+        // New Year's Theme Colors - Red & White
+        ny: {
+          red: "#DC143C",
+          "red-light": "#FF6B6B",
+          "red-dark": "#B91C1C",
+          white: "#FFFFFF",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -62,6 +69,7 @@ export default {
       animation: {
         "glow-pulse": "glow-pulse 2s ease-in-out infinite",
         "shimmer": "shimmer 2s linear infinite",
+        "scroll": "scroll 20s linear infinite",
       },
       keyframes: {
         "glow-pulse": {
@@ -71,6 +79,10 @@ export default {
         "shimmer": {
           "0%": { backgroundPosition: "-1000px 0" },
           "100%": { backgroundPosition: "1000px 0" },
+        },
+        "scroll": {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
         },
       },
     },

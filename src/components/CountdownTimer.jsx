@@ -53,9 +53,9 @@ export function CountdownTimer({ targetDate }) {
       {items.map(item => (
         <div
           key={item.label}
-          className="rounded-2xl border border-cyber-dark-secondary bg-gradient-to-br from-cyber-dark to-cyber-dark-secondary px-6 py-4 text-center shadow-lg shadow-cyan-500/10"
+          className="rounded-2xl border border-white/20 bg-gradient-to-br from-black/50 to-black/30 px-6 py-4 text-center shadow-lg shadow-ny-red/10"
         >
-          <p className="text-4xl font-orbitron text-cyber-cyan">{item.value}</p>
+          <p className="text-4xl font-orbitron text-ny-red">{item.value}</p>
           <p className="text-sm uppercase tracking-widest text-muted-foreground">{item.label}</p>
         </div>
       ))}

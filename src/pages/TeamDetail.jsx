@@ -1,9 +1,10 @@
 import { useState, useEffect, useMemo } from "react"
 import { useParams, useNavigate } from "react-router-dom"
-import { ArrowLeft, Calendar, Users, Code, User, TrendingUp, Award, Target, Clock, Activity, CheckCircle2, XCircle, Github, Linkedin } from "lucide-react"
+import { ArrowLeft, Calendar, Users, Code, User, TrendingUp, Award, Target, Clock, Activity, CheckCircle2, XCircle, Github, Linkedin, Download } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts"
 
 // Örnek takım verileri - gerçek veriler API'den gelecek
 const allTeams = [
@@ -340,13 +341,13 @@ function getTeamInitials(name) {
 
 function getTeamColor(name) {
   const colors = [
-    "from-cyber-cyan to-cyber-purple",
+    "from-ny-red to-white",
     "from-pink-500 to-rose-500",
     "from-yellow-400 to-orange-500",
     "from-green-400 to-emerald-500",
-    "from-blue-400 to-indigo-500",
-    "from-purple-400 to-pink-500",
-    "from-cyan-400 to-teal-500",
+    "from-red-400 to-pink-500",
+    "from-red-500 to-rose-500",
+    "from-red-600 to-red-400",
     "from-violet-400 to-fuchsia-500",
   ]
   const hash = name.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0)
@@ -372,7 +373,7 @@ function TeamLogo({ team }) {
         <img
           src={team.logo}
           alt={`${team.name} logo`}
-          className="h-20 w-20 sm:h-24 sm:w-24 rounded-xl object-contain bg-white/5 p-2 border-2 border-cyber-cyan/30 shadow-lg ring-2 ring-cyber-cyan/20"
+          className="h-20 w-20 sm:h-24 sm:w-24 rounded-xl object-contain bg-white/5 p-2 border-2 border-ny-red/30 shadow-lg ring-2 ring-ny-red/20"
           onError={() => setImageError(true)}
         />
       ) : (
@@ -390,12 +391,15 @@ function TeamLogo({ team }) {
 
 // Grafik renkleri
 const CHART_COLORS = {
-  primary: "#00d9ff",
-  secondary: "#8b5cf6",
+  primary: "#DC143C",
+  secondary: "#FFFFFF",
   success: "#10b981",
   danger: "#ef4444",
   warning: "#f59e0b",
-  colors: ["#00d9ff", "#8b5cf6", "#10b981", "#f59e0b", "#ef4444", "#06b6d4", "#a855f7", "#ec4899"],
+  colors: ["#DC143C", "#FFFFFF", "#10b981", "#f59e0b", "#ef4444", "#FF6B6B", "#B91C1C", "#ec4899"],
+  solve: "#10b981", // Yeşil
+  fail: "#ef4444", // Kırmızı
+  categories: ["#ec4899", "#10b981", "#06b6d4", "#ef4444"], // Magenta, Yeşil, Cyan, Kırmızı
 }
 
 export default function TeamDetail() {
@@ -404,6 +408,7 @@ export default function TeamDetail() {
   const [team, setTeam] = useState(null)
   const [members, setMembers] = useState([])
   const [performanceData, setPerformanceData] = useState(null)
+  const [isMembersDialogOpen, setIsMembersDialogOpen] = useState(false)
 
   useEffect(() => {
     // URL'den gelen takım adını decode et
@@ -489,18 +494,186 @@ export default function TeamDetail() {
                   )}
                   <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-sm sm:text-base">
                     <div className="flex items-center gap-2 text-muted-foreground">
-                      <Calendar className="h-4 w-4 text-cyber-cyan" />
+                      <Calendar className="h-4 w-4 text-ny-red" />
                       <span>Oluşturma Tarihi: <span className="text-white">{formatDate(team.createdAt)}</span></span>
                     </div>
-                    <div className="flex items-center gap-2 text-muted-foreground">
-                      <Users className="h-4 w-4 text-cyber-cyan" />
-                      <span>Üye Sayısı: <span className="text-white">{members.length}</span></span>
+                    <Dialog open={isMembersDialogOpen} onOpenChange={setIsMembersDialogOpen}>
+                      <DialogTrigger asChild>
+                        <button className="relative flex items-center gap-2 px-3 py-1.5 rounded-lg border border-ny-red/40 bg-gradient-to-r from-ny-red/10 to-white/5 hover:from-ny-red/20 hover:to-white/10 transition-all cursor-pointer group shadow-[0_0_8px_rgba(220,20,60,0.2)] hover:shadow-[0_0_12px_rgba(220,20,60,0.4)]">
+                          <Users className="h-4 w-4 text-ny-red group-hover:rotate-12 transition-transform" />
+                          <span className="text-sm text-white font-medium">Üye Sayısı: <span className="text-ny-red font-bold glow-red-text">{members.length}</span></span>
+                          <span className="absolute -top-1 -right-1 h-2 w-2 bg-ny-red rounded-full animate-pulse opacity-75"></span>
+                        </button>
+                      </DialogTrigger>
+                      <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto bg-black/95 border-ny-red/30">
+                        <DialogHeader>
+                          <DialogTitle className="flex items-center gap-2 text-2xl text-white">
+                            <Users className="h-6 w-6 text-ny-red" />
+                            Takım Üyeleri - {team.name}
+                          </DialogTitle>
+                        </DialogHeader>
+                        <div className="mt-4">
+                          {members.length > 0 ? (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                              {members.map((member, index) => (
+                                <div
+                                  key={index}
+                                  className="bg-white/5 border border-white/10 rounded-lg p-4 sm:p-5 hover:bg-white/10 transition-all hover:border-ny-red/30"
+                                >
+                                  <div className="flex items-start gap-3 mb-3">
+                                    <div className="h-10 w-10 rounded-full bg-gradient-to-br from-ny-red to-white flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                                      {member.firstName[0]}{member.lastName[0]}
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                      <div className="flex items-center gap-2 mb-1">
+                                        <User className="h-4 w-4 text-ny-red flex-shrink-0" />
+                                        <p className="text-sm sm:text-base font-semibold text-white truncate">
+                                          {member.firstName} {member.lastName}
+                                        </p>
+                                      </div>
+                                      <p className="text-xs sm:text-sm text-ny-red mb-2 truncate">
+                                        @{member.nickname}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground mb-3">
+                                    <Code className="h-3 w-3 sm:h-4 sm:w-4 text-ny-red flex-shrink-0" />
+                                    <span className="truncate">{member.softwareField}</span>
+                                  </div>
+                                  {/* Social Media Buttons */}
+                                  <div className="flex items-center gap-2 pt-2 border-t border-white/10">
+                                    {member.github && (
+                                      <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        className="h-8 px-2 flex-1 text-xs hover:bg-white/10 hover:text-ny-red"
+                                        asChild
+                                      >
+                                        <a
+                                          href={member.github}
+                                          target="_blank"
+                                          rel="noreferrer"
+                                          className="flex items-center justify-center gap-1.5"
+                                        >
+                                          <Github className="h-3.5 w-3.5" />
+                                          <span className="hidden sm:inline">GitHub</span>
+                                        </a>
+                                      </Button>
+                                    )}
+                                    {member.linkedin && (
+                                      <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        className="h-8 px-2 flex-1 text-xs hover:bg-white/10 hover:text-ny-red"
+                                        asChild
+                                      >
+                                        <a
+                                          href={member.linkedin}
+                                          target="_blank"
+                                          rel="noreferrer"
+                                          className="flex items-center justify-center gap-1.5"
+                                        >
+                                          <Linkedin className="h-3.5 w-3.5" />
+                                          <span className="hidden sm:inline">LinkedIn</span>
+                                        </a>
+                                      </Button>
+                                    )}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          ) : (
+                            <div className="text-center py-8">
+                              <p className="text-muted-foreground">Bu takımda henüz üye bulunmamaktadır.</p>
+                            </div>
+                          )}
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                  </div>
+                </div>
+                {/* Rank Badge - Sağ Taraf */}
+                <div className="flex-shrink-0">
+                  <div className="flex flex-col items-center sm:items-end gap-3">
+                    <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-br from-ny-red/20 to-white/10 border border-ny-red/30">
+                      <Award className="h-5 w-5 text-ny-red" />
+                      <div className="flex flex-col">
+                        <span className="text-xs text-muted-foreground uppercase tracking-wider">Sıralama</span>
+                        <span className="text-2xl sm:text-3xl font-bold text-white glow-red-text">
+                          #{team.rank}
+                        </span>
+                      </div>
                     </div>
+                    {performanceData && (
+                      <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-br from-ny-red/20 to-white/10 border border-ny-red/30">
+                        <TrendingUp className="h-5 w-5 text-ny-red" />
+                        <div className="flex flex-col">
+                          <span className="text-xs text-muted-foreground uppercase tracking-wider">Toplam Puan</span>
+                          <span className="text-2xl sm:text-3xl font-bold text-white glow-red-text">
+                            {performanceData.scoreOverTime[performanceData.scoreOverTime.length - 1]?.score || 0}
+                          </span>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
             </CardContent>
           </Card>
+
+          {/* Team Member Contributions Table */}
+          {performanceData && performanceData.memberContributions && (
+            <Card className="bg-black/30 border-white/10 backdrop-blur-md mb-6">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-xl sm:text-2xl">
+                  <Users className="h-5 w-5 text-ny-red" />
+                  Takım Üyeleri Katkıları
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-4 sm:p-6">
+                <div className="rounded-lg border border-white/10 bg-black/20 overflow-hidden">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="bg-white/5 border-b border-white/10">
+                        <th className="px-4 py-3 text-left text-sm font-semibold text-white uppercase tracking-wider">
+                          User Name
+                        </th>
+                        <th className="px-4 py-3 text-right text-sm font-semibold text-white uppercase tracking-wider">
+                          Score
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/5">
+                      {performanceData.memberContributions.map((member, index) => {
+                        // Üye katkısına göre skor hesapla (örnek: katkı yüzdesi * toplam skor)
+                        const totalScore = performanceData.scoreOverTime[performanceData.scoreOverTime.length - 1]?.score || 0
+                        const memberScore = Math.round((member.contributions / 100) * totalScore)
+                        return (
+                          <tr
+                            key={index}
+                            className={`hover:bg-white/5 transition-colors ${
+                              index % 2 === 0 ? "bg-white/2" : "bg-transparent"
+                            }`}
+                          >
+                            <td className="px-4 py-3">
+                              <span className="text-sm text-cyan-400 font-medium">
+                                {member.name}
+                              </span>
+                            </td>
+                            <td className="px-4 py-3 text-right">
+                              <span className="text-sm text-white font-semibold">
+                                {memberScore}
+                              </span>
+                            </td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
           {/* Team Statistics & Analytics */}
           {performanceData && (
@@ -511,7 +684,7 @@ export default function TeamDetail() {
                   <CardContent className="p-4 sm:p-5">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2 text-muted-foreground">
-                        <Target className="h-4 w-4 text-cyber-cyan" />
+                        <Target className="h-4 w-4 text-ny-red" />
                         <span className="text-xs sm:text-sm">Çözülen Challenge</span>
                       </div>
                     </div>
@@ -523,7 +696,7 @@ export default function TeamDetail() {
                     </p>
                     <div className="mt-3 h-2 bg-white/5 rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-gradient-to-r from-cyber-cyan to-cyber-purple rounded-full transition-all"
+                        className="h-full bg-gradient-to-r from-ny-red to-white rounded-full transition-all"
                         style={{ width: `${performanceData.successRate}%` }}
                       />
                     </div>
@@ -537,7 +710,7 @@ export default function TeamDetail() {
                   <CardContent className="p-4 sm:p-5">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2 text-muted-foreground">
-                        <Award className="h-4 w-4 text-cyber-cyan" />
+                        <Award className="h-4 w-4 text-ny-red" />
                         <span className="text-xs sm:text-sm">Toplam Skor</span>
                       </div>
                     </div>
@@ -545,7 +718,7 @@ export default function TeamDetail() {
                       {performanceData.scoreOverTime[performanceData.scoreOverTime.length - 1]?.score || 0}
                     </p>
                     <div className="flex items-center gap-1 mt-2">
-                      <TrendingUp className="h-3 w-3 text-cyber-cyan" />
+                      <TrendingUp className="h-3 w-3 text-ny-red" />
                       <span className="text-xs text-muted-foreground">
                         Son {performanceData.scoreOverTime.length} günde
                       </span>
@@ -557,13 +730,13 @@ export default function TeamDetail() {
                   <CardContent className="p-4 sm:p-5">
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2 text-muted-foreground">
-                        <Users className="h-4 w-4 text-cyber-cyan" />
+                        <Users className="h-4 w-4 text-ny-red" />
                         <span className="text-xs sm:text-sm">Aktif Üyeler</span>
                       </div>
                     </div>
                     <p className="text-2xl sm:text-3xl font-bold text-white">{members.length}</p>
                     <div className="flex items-center gap-1 mt-2">
-                      <Code className="h-3 w-3 text-cyber-cyan" />
+                      <Code className="h-3 w-3 text-ny-red" />
                       <span className="text-xs text-muted-foreground">
                         {fieldDistribution.length} farklı alan
                       </span>
@@ -574,261 +747,300 @@ export default function TeamDetail() {
             </div>
           )}
 
-          {/* Team Members */}
-          <Card className="bg-black/30 border-white/10 backdrop-blur-md mb-6">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-xl sm:text-2xl">
-                <Users className="h-5 w-5 text-cyber-cyan" />
-                Takım Üyeleri
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-4 sm:p-6">
-              {members.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {members.map((member, index) => (
-                    <div
-                      key={index}
-                      className="bg-white/5 border border-white/10 rounded-lg p-4 sm:p-5 hover:bg-white/10 transition-all hover:border-cyber-cyan/30"
-                    >
-                      <div className="flex items-start gap-3 mb-3">
-                        <div className="h-10 w-10 rounded-full bg-gradient-to-br from-cyber-cyan to-cyber-purple flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
-                          {member.firstName[0]}{member.lastName[0]}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-1">
-                            <User className="h-4 w-4 text-cyber-cyan flex-shrink-0" />
-                            <p className="text-sm sm:text-base font-semibold text-white truncate">
-                              {member.firstName} {member.lastName}
-                            </p>
-                          </div>
-                          <p className="text-xs sm:text-sm text-cyber-cyan mb-2 truncate">
-                            @{member.nickname}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground mb-3">
-                        <Code className="h-3 w-3 sm:h-4 sm:w-4 text-cyber-cyan flex-shrink-0" />
-                        <span className="truncate">{member.softwareField}</span>
-                      </div>
-                      {/* Social Media Buttons */}
-                      <div className="flex items-center gap-2 pt-2 border-t border-white/10">
-                        {member.github && (
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-8 px-2 flex-1 text-xs hover:bg-white/10 hover:text-cyber-cyan"
-                            asChild
-                          >
-                            <a
-                              href={member.github}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="flex items-center justify-center gap-1.5"
-                            >
-                              <Github className="h-3.5 w-3.5" />
-                              <span className="hidden sm:inline">GitHub</span>
-                            </a>
-                          </Button>
-                        )}
-                        {member.linkedin && (
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-8 px-2 flex-1 text-xs hover:bg-white/10 hover:text-cyber-cyan"
-                            asChild
-                          >
-                            <a
-                              href={member.linkedin}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="flex items-center justify-center gap-1.5"
-                            >
-                              <Linkedin className="h-3.5 w-3.5" />
-                              <span className="hidden sm:inline">LinkedIn</span>
-                            </a>
-                          </Button>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="text-center py-8">
-                  <p className="text-muted-foreground">Bu takımda henüz üye bulunmamaktadır.</p>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-
           {/* Team Statistics & Analytics - Charts */}
           {performanceData && (
             <div className="space-y-6">
               {/* Charts Grid */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 gap-6">
                 {/* Success Rate Progress */}
                 <Card className="bg-black/30 border-white/10 backdrop-blur-md">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
-                      <Target className="h-5 w-5 text-cyber-cyan" />
+                      <Target className="h-5 w-5 text-ny-red" />
                       Başarı İstatistikleri
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="p-4 sm:p-6 space-y-5">
-                    {/* Ana İstatistikler */}
-                    <div className="space-y-4">
-                      <div>
-                        <div className="flex items-center justify-between mb-2">
-                          <div className="flex items-center gap-2">
-                            <CheckCircle2 className="h-4 w-4 text-cyber-cyan" />
-                            <span className="text-sm text-muted-foreground">Çözülen Challenge'lar</span>
-                          </div>
-                          <span className="text-sm font-semibold text-white">
-                            {performanceData.challengesSolved} / {performanceData.totalChallenges}
-                          </span>
+                  <CardContent className="p-4 sm:p-6">
+                    {/* Yatay İstatistikler Grid */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                      {/* Çözülen Challenge'lar */}
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2">
+                          <CheckCircle2 className="h-4 w-4 text-ny-red" />
+                          <span className="text-xs sm:text-sm text-muted-foreground">Çözülen Challenge'lar</span>
                         </div>
-                        <div className="h-3 bg-white/5 rounded-full overflow-hidden">
+                        <p className="text-xl sm:text-2xl font-bold text-white">
+                          {performanceData.challengesSolved}
+                          <span className="text-sm text-muted-foreground font-normal ml-1">
+                            / {performanceData.totalChallenges}
+                          </span>
+                        </p>
+                        <div className="h-2 bg-white/5 rounded-full overflow-hidden">
                           <div
-                            className="h-full bg-gradient-to-r from-cyber-cyan to-cyber-purple rounded-full flex items-center justify-end pr-2"
+                            className="h-full bg-gradient-to-r from-ny-red to-white rounded-full"
                             style={{ width: `${performanceData.successRate}%` }}
-                          >
-                            <span className="text-xs font-semibold text-white">
-                              {performanceData.successRate.toFixed(1)}%
-                            </span>
-                          </div>
+                          />
                         </div>
+                        <p className="text-xs text-muted-foreground">
+                          {performanceData.successRate.toFixed(1)}% başarı
+                        </p>
                       </div>
-                      <div>
-                        <div className="flex items-center justify-between mb-2">
-                          <div className="flex items-center gap-2">
-                            <XCircle className="h-4 w-4 text-red-500" />
-                            <span className="text-sm text-muted-foreground">Başarısız Denemeler</span>
-                          </div>
-                          <span className="text-sm font-semibold text-white">
-                            {performanceData.challengesFailed}
-                          </span>
+
+                      {/* Başarısız Denemeler */}
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2">
+                          <XCircle className="h-4 w-4 text-red-500" />
+                          <span className="text-xs sm:text-sm text-muted-foreground">Başarısız Denemeler</span>
                         </div>
-                        <div className="h-3 bg-white/5 rounded-full overflow-hidden">
+                        <p className="text-xl sm:text-2xl font-bold text-white">
+                          {performanceData.challengesFailed}
+                        </p>
+                        <div className="h-2 bg-white/5 rounded-full overflow-hidden">
                           <div
-                            className="h-full bg-gradient-to-r from-red-500 to-orange-500 rounded-full flex items-center justify-end pr-2"
+                            className="h-full bg-gradient-to-r from-red-500 to-orange-500 rounded-full"
                             style={{
                               width: `${(performanceData.challengesFailed / performanceData.totalChallenges) * 100}%`,
                             }}
-                          >
-                            {performanceData.challengesFailed > 0 && (
-                              <span className="text-xs font-semibold text-white">
-                                {((performanceData.challengesFailed / performanceData.totalChallenges) * 100).toFixed(1)}%
-                              </span>
-                            )}
-                          </div>
+                          />
                         </div>
-                      </div>
-                    </div>
-
-                    {/* Ek Metrikler */}
-                    <div className="grid grid-cols-2 gap-4 pt-2 border-t border-white/10">
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                          <Activity className="h-3 w-3 text-cyber-cyan" />
-                          <span>Toplam Deneme</span>
-                        </div>
-                        <p className="text-lg font-bold text-white">
-                          {performanceData.totalAttempts || performanceData.challengesSolved + performanceData.challengesFailed}
+                        <p className="text-xs text-muted-foreground">
+                          {((performanceData.challengesFailed / performanceData.totalChallenges) * 100).toFixed(1)}% başarısız
                         </p>
                       </div>
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                          <Clock className="h-3 w-3 text-cyber-cyan" />
-                          <span>Ort. Çözüm Süresi</span>
+
+                      {/* Toplam Deneme */}
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2">
+                          <Activity className="h-4 w-4 text-ny-red" />
+                          <span className="text-xs sm:text-sm text-muted-foreground">Toplam Deneme</span>
                         </div>
-                        <p className="text-lg font-bold text-white">
+                        <p className="text-xl sm:text-2xl font-bold text-white">
+                          {performanceData.totalAttempts || performanceData.challengesSolved + performanceData.challengesFailed}
+                        </p>
+                        {performanceData.lastActivity && (
+                          <p className="text-xs text-muted-foreground">
+                            Son: {performanceData.lastActivity}
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Ortalama Çözüm Süresi */}
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2">
+                          <Clock className="h-4 w-4 text-ny-red" />
+                          <span className="text-xs sm:text-sm text-muted-foreground">Ort. Çözüm Süresi</span>
+                        </div>
+                        <p className="text-xl sm:text-2xl font-bold text-white">
                           {performanceData.averageSolveTime || "N/A"}
                         </p>
                       </div>
                     </div>
 
-                    {/* Son Aktivite */}
-                    {performanceData.lastActivity && (
-                      <div className="pt-2 border-t border-white/10">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                            <Activity className="h-3 w-3 text-cyber-cyan" />
-                            <span>Son Aktivite</span>
-                          </div>
-                          <span className="text-xs font-semibold text-cyber-cyan">
-                            {performanceData.lastActivity}
-                          </span>
-                        </div>
-                      </div>
-                    )}
-
                     {/* Kategori Bazlı Başarı Oranları */}
                     {performanceData.categoryBreakdown && performanceData.categoryBreakdown.length > 0 && (
-                      <div className="pt-2 border-t border-white/10 space-y-3">
-                        <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+                      <div className="mt-6 pt-4 border-t border-white/10">
+                        <h4 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
                           Kategori Performansı
                         </h4>
-                        {performanceData.categoryBreakdown.slice(0, 3).map((category, index) => (
-                          <div key={index} className="space-y-1">
-                            <div className="flex items-center justify-between text-xs">
-                              <span className="text-muted-foreground truncate pr-2">{category.category}</span>
-                              <span className="text-white font-semibold whitespace-nowrap">
-                                {category.solved}/{category.total}
-                              </span>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                          {performanceData.categoryBreakdown.slice(0, 3).map((category, index) => (
+                            <div key={index} className="space-y-2">
+                              <div className="flex items-center justify-between text-xs">
+                                <span className="text-muted-foreground truncate pr-2">{category.category}</span>
+                                <span className="text-white font-semibold whitespace-nowrap">
+                                  {category.solved}/{category.total}
+                                </span>
+                              </div>
+                              <div className="h-2 bg-white/5 rounded-full overflow-hidden">
+                                <div
+                                  className="h-full bg-gradient-to-r from-ny-red to-white rounded-full"
+                                  style={{ width: `${category.rate}%` }}
+                                />
+                              </div>
+                              <p className="text-xs text-muted-foreground">
+                                {category.rate.toFixed(1)}% başarı
+                              </p>
                             </div>
-                            <div className="h-2 bg-white/5 rounded-full overflow-hidden">
-                              <div
-                                className="h-full bg-gradient-to-r from-cyber-cyan to-cyber-purple rounded-full"
-                                style={{ width: `${category.rate}%` }}
-                              />
-                            </div>
-                          </div>
-                        ))}
+                          ))}
+                        </div>
                       </div>
                     )}
                   </CardContent>
                 </Card>
 
-                {/* Member Contributions */}
-                {performanceData.memberContributions && (
-                  <Card className="bg-black/30 border-white/10 backdrop-blur-md">
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
-                        <Users className="h-5 w-5 text-cyber-cyan" />
-                        Üye Katkıları
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="p-4 sm:p-6">
-                      <ResponsiveContainer width="100%" height={250}>
-                        <BarChart data={performanceData.memberContributions}>
-                          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-                          <XAxis
-                            dataKey="name"
-                            stroke="rgba(255,255,255,0.5)"
-                            style={{ fontSize: "12px" }}
-                          />
-                          <YAxis
-                            stroke="rgba(255,255,255,0.5)"
-                            style={{ fontSize: "12px" }}
-                          />
-                          <Tooltip
-                            contentStyle={{
-                              backgroundColor: "rgba(0, 0, 0, 0.9)",
-                              border: "1px solid rgba(0, 217, 255, 0.3)",
-                              borderRadius: "8px",
-                              color: "#fff",
-                            }}
-                          />
-                          <Bar
-                            dataKey="contributions"
-                            fill={CHART_COLORS.primary}
-                            radius={[8, 8, 0, 0]}
-                          />
-                        </BarChart>
-                      </ResponsiveContainer>
-                    </CardContent>
-                  </Card>
-                )}
               </div>
+            </div>
+          )}
+
+          {/* Solve Statistics Charts */}
+          {performanceData && (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+              {/* Solve Percentages Donut Chart */}
+              <Card className="bg-black/30 border-white/10 backdrop-blur-md">
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+                      <Target className="h-5 w-5 text-ny-red" />
+                      Çözüm Yüzdeleri
+                    </CardTitle>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 w-8 p-0 hover:bg-white/10"
+                    >
+                      <Download className="h-4 w-4 text-muted-foreground" />
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent className="p-4 sm:p-6">
+                  <ResponsiveContainer width="100%" height={300}>
+                    <PieChart>
+                      <Pie
+                        data={[
+                          {
+                            name: "Çözülen",
+                            value: performanceData.challengesSolved,
+                            percentage: performanceData.successRate.toFixed(2),
+                          },
+                          {
+                            name: "Başarısız",
+                            value: performanceData.challengesFailed,
+                            percentage: ((performanceData.challengesFailed / performanceData.totalChallenges) * 100).toFixed(2),
+                          },
+                        ]}
+                        cx="50%"
+                        cy="50%"
+                        labelLine={false}
+                        label={({ name, percentage }) => `${name}: ${percentage}%`}
+                        outerRadius={100}
+                        fill="#8884d8"
+                        dataKey="value"
+                      >
+                        <Cell fill={CHART_COLORS.solve} />
+                        <Cell fill={CHART_COLORS.fail} />
+                      </Pie>
+                      <Tooltip
+                        contentStyle={{
+                          backgroundColor: "rgba(0, 0, 0, 0.9)",
+                          border: "1px solid rgba(220, 20, 60, 0.3)",
+                          borderRadius: "8px",
+                          color: "#fff",
+                        }}
+                        formatter={(value, name) => [
+                          `${value} (${name === "Çözülen" ? performanceData.successRate.toFixed(2) : ((performanceData.challengesFailed / performanceData.totalChallenges) * 100).toFixed(2)}%)`,
+                          name,
+                        ]}
+                      />
+                      <Legend
+                        verticalAlign="bottom"
+                        height={36}
+                        formatter={(value) => (
+                          <span className="text-white text-sm">{value}</span>
+                        )}
+                        iconType="square"
+                      />
+                    </PieChart>
+                  </ResponsiveContainer>
+                  <div className="mt-4 flex items-center justify-center gap-4 text-sm">
+                    <div className="flex items-center gap-2">
+                      <div className="h-3 w-3 rounded bg-[#10b981]"></div>
+                      <span className="text-muted-foreground">
+                        Çözülen: {performanceData.challengesSolved} ({performanceData.successRate.toFixed(2)}%)
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="h-3 w-3 rounded bg-[#ef4444]"></div>
+                      <span className="text-muted-foreground">
+                        Başarısız: {performanceData.challengesFailed} ({((performanceData.challengesFailed / performanceData.totalChallenges) * 100).toFixed(2)}%)
+                      </span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Category Breakdown Donut Chart */}
+              {performanceData.categoryBreakdown && performanceData.categoryBreakdown.length > 0 && (
+                <Card className="bg-black/30 border-white/10 backdrop-blur-md">
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+                        <Code className="h-5 w-5 text-ny-red" />
+                        Kategori Dağılımı
+                      </CardTitle>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-8 w-8 p-0 hover:bg-white/10"
+                      >
+                        <Download className="h-4 w-4 text-muted-foreground" />
+                      </Button>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="p-4 sm:p-6">
+                    <ResponsiveContainer width="100%" height={300}>
+                      <PieChart>
+                        <Pie
+                          data={performanceData.categoryBreakdown.map((cat) => ({
+                            name: cat.category,
+                            value: cat.solved,
+                            percentage: cat.rate.toFixed(2),
+                          }))}
+                          cx="50%"
+                          cy="50%"
+                          labelLine={false}
+                          label={({ name, percentage }) => `${percentage}%`}
+                          outerRadius={100}
+                          fill="#8884d8"
+                          dataKey="value"
+                        >
+                          {performanceData.categoryBreakdown.map((entry, index) => (
+                            <Cell
+                              key={`cell-${index}`}
+                              fill={CHART_COLORS.categories[index % CHART_COLORS.categories.length]}
+                            />
+                          ))}
+                        </Pie>
+                        <Tooltip
+                          contentStyle={{
+                            backgroundColor: "rgba(0, 0, 0, 0.9)",
+                            border: "1px solid rgba(220, 20, 60, 0.3)",
+                            borderRadius: "8px",
+                            color: "#fff",
+                          }}
+                          formatter={(value, name, props) => [
+                            `${value}/${props.payload.total} (${props.payload.percentage}%)`,
+                            name,
+                          ]}
+                        />
+                        <Legend
+                          verticalAlign="bottom"
+                          height={36}
+                          formatter={(value) => (
+                            <span className="text-white text-sm">{value}</span>
+                          )}
+                          iconType="square"
+                        />
+                      </PieChart>
+                    </ResponsiveContainer>
+                    <div className="mt-4 grid grid-cols-2 gap-2 text-xs">
+                      {performanceData.categoryBreakdown.map((category, index) => (
+                        <div key={index} className="flex items-center gap-2">
+                          <div
+                            className="h-3 w-3 rounded"
+                            style={{
+                              backgroundColor:
+                                CHART_COLORS.categories[index % CHART_COLORS.categories.length],
+                            }}
+                          ></div>
+                          <span className="text-muted-foreground truncate">
+                            {category.category}: {category.solved}/{category.total} ({category.rate.toFixed(1)}%)
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
             </div>
           )}
         </div>

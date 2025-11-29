@@ -67,7 +67,7 @@ function TeamLogo({ team }) {
         <img
           src={team.logo}
           alt={`${team.name} logo`}
-          className="h-10 w-10 sm:h-12 sm:w-12 rounded-lg object-contain bg-white/5 p-1 sm:p-1.5 border-2 border-cyber-cyan/30 shadow-lg ring-2 ring-cyber-cyan/20"
+          className="h-10 w-10 sm:h-12 sm:w-12 rounded-lg object-contain bg-white/5 p-1 sm:p-1.5 border-2 border-ny-red/30 shadow-lg ring-2 ring-ny-red/20"
           onError={() => setImageError(true)}
         />
       ) : (
@@ -94,26 +94,17 @@ function getTeamInitials(name) {
 
 function getTeamColor(name) {
   const colors = [
-    "from-cyber-cyan to-cyber-purple",
+    "from-ny-red to-white",
     "from-pink-500 to-rose-500",
     "from-yellow-400 to-orange-500",
     "from-green-400 to-emerald-500",
-    "from-blue-400 to-indigo-500",
-    "from-purple-400 to-pink-500",
-    "from-cyan-400 to-teal-500",
+    "from-red-400 to-pink-500",
+    "from-red-500 to-rose-500",
+    "from-red-600 to-red-400",
     "from-violet-400 to-fuchsia-500",
   ]
   const hash = name.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0)
   return colors[hash % colors.length]
-}
-
-function formatDate(dateString) {
-  if (!dateString) return ""
-  const date = new Date(dateString)
-  const day = date.getDate().toString().padStart(2, '0')
-  const month = (date.getMonth() + 1).toString().padStart(2, '0')
-  const year = date.getFullYear()
-  return `${day}.${month}.${year}`
 }
 
 export default function Team() {
@@ -165,7 +156,7 @@ export default function Team() {
           {/* Header */}
           <div className="mb-6 sm:mb-8">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-orbitron font-bold text-white mb-2">
-              <span className="text-cyber-cyan">KUVARS KALKANI</span> DATATON
+              <span className="text-ny-red">KUVARS KALKANI</span> DATATON
             </h1>
             <p className="text-sm sm:text-base text-muted-foreground">Kayıtlı Takımlar</p>
           </div>
@@ -173,7 +164,7 @@ export default function Team() {
           {/* Filter Section */}
           <div className="mb-4 sm:mb-6">
             <div className="relative w-full max-w-md">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-ny-red" />
               <Input
                 type="text"
                 placeholder="Takım adı veya organizasyon ara..."
@@ -182,12 +173,12 @@ export default function Team() {
                   setSearchQuery(e.target.value)
                   setCurrentPage(1)
                 }}
-                className="pl-10 pr-10 bg-black/30 border-white/10 text-white placeholder:text-muted-foreground"
+                className="pl-10 pr-10 bg-black/30 border-ny-red/40 text-white placeholder:text-muted-foreground focus-visible:border-ny-red focus-visible:ring-2 focus-visible:ring-ny-red/50 shadow-[0_0_10px_rgba(220,20,60,0.3)]"
               />
               {searchQuery && (
                 <button
                   onClick={clearSearch}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-white transition-colors"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-ny-red transition-colors"
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -213,7 +204,7 @@ export default function Team() {
                       TEAM
                     </th>
                     <th className="px-3 sm:px-6 py-3 sm:py-4 text-left text-xs sm:text-sm font-semibold text-muted-foreground uppercase tracking-wider hidden sm:table-cell">
-                      OLUŞTURMA TARİHİ
+                      ORGANIZATION
                     </th>
                   </tr>
                 </thead>
@@ -240,14 +231,14 @@ export default function Team() {
                                 {team.name}
                               </span>
                               <span className="text-[10px] sm:text-xs text-muted-foreground sm:hidden">
-                                {team.createdAt ? formatDate(team.createdAt) : "-"}
+                                {team.organization || "-"}
                               </span>
                             </div>
                           </div>
                         </td>
                         <td className="px-3 sm:px-6 py-3 sm:py-4 hidden sm:table-cell">
                           <span className="text-xs sm:text-sm text-muted-foreground">
-                            {team.createdAt ? formatDate(team.createdAt) : "-"}
+                            {team.organization || "-"}
                           </span>
                         </td>
                       </tr>
@@ -303,7 +294,7 @@ export default function Team() {
                             onClick={() => goToPage(page)}
                             className={
                               currentPage === page
-                                ? "bg-cyber-cyan text-black hover:bg-cyber-cyan/90"
+                                ? "bg-ny-red text-white hover:bg-ny-red/90"
                                 : "border-white/10 hover:bg-white/5"
                             }
                           >

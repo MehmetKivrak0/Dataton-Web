@@ -3,43 +3,11 @@ import { useNavigate, Link } from "react-router-dom"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { UserPlus, Mail, Lock, Eye, EyeOff, User, ArrowLeft, GraduationCap, BookOpen, School, Phone, X } from "lucide-react"
+import { UserPlus, Mail, Lock, Eye, EyeOff, User, ArrowLeft, GraduationCap, BookOpen, School, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import toast from "react-hot-toast"
-
-// Telefon numarası validasyon fonksiyonu
-const validatePhoneNumber = (phone) => {
-  // Boşluk, tire, parantez gibi karakterleri temizle
-  const cleaned = phone.replace(/[\s\-()]/g, '')
-  
-  // Türkiye telefon numarası formatları:
-  // 05XX XXX XX XX (10 haneli, 0 ile başlar)
-  // +90 5XX XXX XX XX (13 haneli, +90 ile başlar)
-  // 5XX XXX XX XX (9 haneli, 5 ile başlar)
-  
-  if (cleaned.length === 0) {
-    return false
-  }
-  
-  // 0 ile başlayan 10 haneli numara
-  if (cleaned.startsWith('0') && cleaned.length === 10) {
-    return /^0[5][0-9]{9}$/.test(cleaned)
-  }
-  
-  // +90 ile başlayan 13 haneli numara
-  if (cleaned.startsWith('90') && cleaned.length === 12) {
-    return /^90[5][0-9]{9}$/.test(cleaned)
-  }
-  
-  // 5 ile başlayan 9 haneli numara
-  if (cleaned.startsWith('5') && cleaned.length === 9) {
-    return /^5[0-9]{8}$/.test(cleaned)
-  }
-  
-  return false
-}
 
 const registerSchema = z.object({
   fullName: z.string()
@@ -58,15 +26,6 @@ const registerSchema = z.object({
     .min(6, "Şifre en az 6 karakter olmalıdır")
     .max(50, "Şifre en fazla 50 karakter olabilir")
     .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, "Şifre en az bir küçük harf, bir büyük harf ve bir rakam içermelidir"),
-  phone: z.string()
-    .min(1, "Telefon numarası gereklidir")
-    .refine((val) => {
-      const cleaned = val.replace(/[\s\-()]/g, '')
-      return cleaned.length >= 9 && cleaned.length <= 12
-    }, "Telefon numarası 9-12 haneli olmalıdır")
-    .refine((val) => validatePhoneNumber(val), {
-      message: "Geçerli bir Türkiye telefon numarası giriniz (05XX XXX XX XX formatında)",
-    }),
   isNotStudent: z.boolean().default(false),
   university: z.string().optional(),
   department: z.string().optional(),
@@ -142,7 +101,7 @@ export default function Register() {
         style: {
           background: '#1a1f3a',
           color: '#fff',
-          border: '1px solid #00d9ff',
+          border: '1px solid #DC143C',
         },
       })
       
@@ -177,7 +136,7 @@ export default function Register() {
         {/* Back Button */}
         <Link
           to="/"
-          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-cyber-cyan transition-colors mb-6"
+          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-ny-red transition-colors mb-6"
         >
           <ArrowLeft className="h-4 w-4" />
           Ana Sayfaya Dön
@@ -187,12 +146,12 @@ export default function Register() {
         <Card className="bg-black/30 border-white/10 backdrop-blur-md">
           <CardHeader className="space-y-1 text-center">
             <div className="flex justify-center mb-4">
-              <div className="h-16 w-16 rounded-full bg-gradient-to-br from-cyber-cyan to-cyber-purple flex items-center justify-center">
+              <div className="h-16 w-16 rounded-full bg-gradient-to-br from-ny-red to-white flex items-center justify-center">
                 <UserPlus className="h-8 w-8 text-white" />
               </div>
             </div>
             <CardTitle className="text-2xl font-orbitron text-white">
-              <span className="text-cyber-cyan">KUVARS KALKANI</span> DATATON
+              <span className="text-ny-red">KUVARS KALKANI</span> DATATON
             </CardTitle>
             <CardDescription className="text-base">
               Yeni hesap oluşturun
@@ -207,12 +166,12 @@ export default function Register() {
                     Ad Soyad
                   </label>
                   <div className="relative">
-                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-cyber-cyan" />
+                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-ny-red" />
                     <Input
                       id="fullName"
                       type="text"
                       placeholder="Adınız Soyadınız"
-                      className="pl-10 bg-black/30 border-white/10 text-white placeholder:text-muted-foreground focus-visible:border-cyber-cyan"
+                      className="pl-10 bg-black/30 border-ny-red/40 text-white placeholder:text-muted-foreground focus-visible:border-ny-red focus-visible:ring-2 focus-visible:ring-ny-red/50 shadow-[0_0_10px_rgba(220,20,60,0.3)]"
                       {...register("fullName")}
                     />
                   </div>
@@ -227,12 +186,12 @@ export default function Register() {
                     Nick Name
                   </label>
                   <div className="relative">
-                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-cyber-cyan" />
+                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-ny-red" />
                     <Input
                       id="nickname"
                       type="text"
                       placeholder="Takma adınız"
-                      className="pl-10 bg-black/30 border-white/10 text-white placeholder:text-muted-foreground focus-visible:border-cyber-cyan"
+                      className="pl-10 bg-black/30 border-ny-red/40 text-white placeholder:text-muted-foreground focus-visible:border-ny-red focus-visible:ring-2 focus-visible:ring-ny-red/50 shadow-[0_0_10px_rgba(220,20,60,0.3)]"
                       {...register("nickname")}
                     />
                   </div>
@@ -247,12 +206,12 @@ export default function Register() {
                     Email
                   </label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-cyber-cyan" />
+                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-ny-red" />
                     <Input
                       id="email"
                       type="email"
                       placeholder="ornek@email.com"
-                      className="pl-10 bg-black/30 border-white/10 text-white placeholder:text-muted-foreground focus-visible:border-cyber-cyan"
+                      className="pl-10 bg-black/30 border-ny-red/40 text-white placeholder:text-muted-foreground focus-visible:border-ny-red focus-visible:ring-2 focus-visible:ring-ny-red/50 shadow-[0_0_10px_rgba(220,20,60,0.3)]"
                       {...register("email")}
                     />
                   </div>
@@ -267,18 +226,18 @@ export default function Register() {
                     Password
                   </label>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-cyber-cyan" />
+                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-ny-red" />
                     <Input
                       id="password"
                       type={showPassword ? "text" : "password"}
                       placeholder="••••••••"
-                      className="pl-10 pr-10 bg-black/30 border-white/10 text-white placeholder:text-muted-foreground focus-visible:border-cyber-cyan"
+                      className="pl-10 pr-10 bg-black/30 border-ny-red/40 text-white placeholder:text-muted-foreground focus-visible:border-ny-red focus-visible:ring-2 focus-visible:ring-ny-red/50 shadow-[0_0_10px_rgba(220,20,60,0.3)]"
                       {...register("password")}
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-cyber-cyan transition-colors"
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-ny-red transition-colors"
                     >
                       {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
@@ -289,55 +248,6 @@ export default function Register() {
                 </div>
               </div>
 
-              {/* Phone Field */}
-              <div className="space-y-2">
-                <label htmlFor="phone" className="text-sm font-medium text-muted-foreground">
-                  Telefon Numarası
-                </label>
-                <div className="relative">
-                  <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-cyber-cyan" />
-                  <Input
-                    id="phone"
-                    type="tel"
-                    placeholder="05XX XXX XX XX"
-                    className="pl-10 bg-black/30 border-white/10 text-white placeholder:text-muted-foreground focus-visible:border-cyber-cyan"
-                    {...register("phone", {
-                      onChange: (e) => {
-                        // Telefon numarası formatlaması
-                        let value = e.target.value.replace(/\D/g, '') // Sadece rakamları al
-                        
-                        // 0 ile başlamıyorsa ve 5 ile başlıyorsa 0 ekle
-                        if (value.length > 0 && !value.startsWith('0') && value.startsWith('5')) {
-                          value = '0' + value
-                        }
-                        
-                        // Formatla: 05XX XXX XX XX
-                        if (value.length > 0) {
-                          if (value.length <= 3) {
-                            value = value
-                          } else if (value.length <= 6) {
-                            value = value.slice(0, 3) + ' ' + value.slice(3)
-                          } else if (value.length <= 8) {
-                            value = value.slice(0, 3) + ' ' + value.slice(3, 6) + ' ' + value.slice(6)
-                          } else {
-                            value = value.slice(0, 3) + ' ' + value.slice(3, 6) + ' ' + value.slice(6, 8) + ' ' + value.slice(8, 10)
-                          }
-                        }
-                        
-                        e.target.value = value
-                      },
-                    })}
-                    maxLength={14} // 0XXX XXX XX XX formatı için
-                  />
-                </div>
-                {errors.phone && (
-                  <p className="text-xs text-red-500 mt-1">{errors.phone.message}</p>
-                )}
-                <p className="text-xs text-muted-foreground">
-                  Örnek: 05XX XXX XX XX
-                </p>
-              </div>
-
               {/* Not Student Checkbox */}
               <div className="flex items-center space-x-2 p-3 rounded-md border border-white/10 bg-black/30 hover:bg-black/40 transition-colors cursor-pointer"
                    onClick={() => handleNotStudentChange(!isNotStudentValue)}>
@@ -346,11 +256,11 @@ export default function Register() {
                   id="isNotStudent"
                   checked={isNotStudentValue}
                   onChange={(e) => handleNotStudentChange(e.target.checked)}
-                  className="w-4 h-4 rounded border-white/20 bg-black/50 text-cyber-cyan focus:ring-cyber-cyan focus:ring-offset-0 cursor-pointer"
+                  className="w-4 h-4 rounded border-white/20 bg-black/50 text-ny-red focus:ring-ny-red focus:ring-offset-0 cursor-pointer"
                   {...register("isNotStudent")}
                 />
                 <label htmlFor="isNotStudent" className="text-sm font-medium text-muted-foreground cursor-pointer flex items-center gap-2">
-                  <X className="h-4 w-4 text-cyber-cyan" />
+                  <X className="h-4 w-4 text-ny-red" />
                   Üniversite Okumuyorum
                 </label>
               </div>
@@ -364,12 +274,12 @@ export default function Register() {
                       Üniversite İsmi
                     </label>
                     <div className="relative">
-                      <School className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-cyber-cyan" />
+                      <School className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-ny-red" />
                       <Input
                         id="university"
                         type="text"
                         placeholder="Üniversite adı"
-                        className="pl-10 bg-black/30 border-white/10 text-white placeholder:text-muted-foreground focus-visible:border-cyber-cyan"
+                        className="pl-10 bg-black/30 border-ny-red/40 text-white placeholder:text-muted-foreground focus-visible:border-ny-red focus-visible:ring-2 focus-visible:ring-ny-red/50 shadow-[0_0_10px_rgba(220,20,60,0.3)]"
                         {...register("university")}
                       />
                     </div>
@@ -385,12 +295,12 @@ export default function Register() {
                         Bölüm Adı
                       </label>
                       <div className="relative">
-                        <BookOpen className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-cyber-cyan" />
+                        <BookOpen className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-ny-red" />
                         <Input
                           id="department"
                           type="text"
                           placeholder="Bölüm adı"
-                          className="pl-10 bg-black/30 border-white/10 text-white placeholder:text-muted-foreground focus-visible:border-cyber-cyan"
+                          className="pl-10 bg-black/30 border-ny-red/40 text-white placeholder:text-muted-foreground focus-visible:border-ny-red focus-visible:ring-2 focus-visible:ring-ny-red/50 shadow-[0_0_10px_rgba(220,20,60,0.3)]"
                           {...register("department")}
                         />
                       </div>
@@ -405,10 +315,10 @@ export default function Register() {
                         Sınıf
                       </label>
                       <div className="relative">
-                        <GraduationCap className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-cyber-cyan z-10" />
+                        <GraduationCap className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-ny-red z-10" />
                         <select
                           id="grade"
-                          className="w-full h-10 pl-10 pr-10 rounded-md border border-white/10 bg-black/30 text-white text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyber-cyan focus-visible:border-cyber-cyan appearance-none cursor-pointer"
+                          className="w-full h-10 pl-10 pr-10 rounded-md border border-ny-red/40 bg-black/30 text-white text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ny-red/50 focus-visible:border-ny-red shadow-[0_0_10px_rgba(220,20,60,0.3)] appearance-none cursor-pointer"
                           {...register("grade")}
                         >
                           <option value="">Sınıf Seçiniz</option>
@@ -436,13 +346,13 @@ export default function Register() {
               <div className="flex items-center justify-between pt-4">
                 <Link
                   to="/auth/login"
-                  className="text-sm text-muted-foreground hover:text-cyber-cyan transition-colors"
+                  className="text-sm text-muted-foreground hover:text-ny-red transition-colors"
                 >
                   Already registered?
                 </Link>
                 <Button
                   type="submit"
-                  className="bg-gradient-to-r from-cyber-cyan to-cyber-purple hover:from-cyber-cyan/90 hover:to-cyber-purple/90 text-black font-semibold px-8"
+                  className="bg-gradient-to-r from-ny-red to-white hover:from-ny-red/90 hover:to-white/90 text-black font-semibold px-8 shadow-[0_0_15px_rgba(220,20,60,0.4)] hover:shadow-[0_0_20px_rgba(220,20,60,0.6)] transition-all"
                   disabled={isLoading}
                 >
                   {isLoading ? "Kayıt yapılıyor..." : "REGISTER"}

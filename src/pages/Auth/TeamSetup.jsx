@@ -101,7 +101,7 @@ export default function TeamSetup() {
         style: {
           background: '#1a1f3a',
           color: '#fff',
-          border: '1px solid #00d9ff',
+          border: '1px solid #DC143C',
         },
       })
       
@@ -131,7 +131,7 @@ export default function TeamSetup() {
         style: {
           background: '#1a1f3a',
           color: '#fff',
-          border: '1px solid #00d9ff',
+          border: '1px solid #DC143C',
         },
       })
       
@@ -163,7 +163,7 @@ export default function TeamSetup() {
         {/* Back Button */}
         <button
           onClick={() => navigate("/auth/register")}
-          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-cyber-cyan transition-colors mb-6"
+          className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-ny-red transition-colors mb-6"
         >
           <ArrowLeft className="h-4 w-4" />
           Geri Dön
@@ -173,12 +173,12 @@ export default function TeamSetup() {
         <Card className="bg-black/30 border-white/10 backdrop-blur-md">
           <CardHeader className="space-y-1 text-center">
             <div className="flex justify-center mb-4">
-              <div className="h-16 w-16 rounded-full bg-gradient-to-br from-cyber-cyan to-cyber-purple flex items-center justify-center">
+              <div className="h-16 w-16 rounded-full bg-gradient-to-br from-ny-red to-white flex items-center justify-center">
                 <Users className="h-8 w-8 text-white" />
               </div>
             </div>
             <CardTitle className="text-2xl font-orbitron text-white">
-              <span className="text-cyber-cyan">TAKIM</span> SEÇİMİ
+              <span className="text-ny-red">TAKIM</span> SEÇİMİ
             </CardTitle>
             <CardDescription className="text-base">
               Takım oluşturun veya mevcut bir takıma katılın
@@ -190,7 +190,7 @@ export default function TeamSetup() {
               <div className="space-y-4">
                 <Button
                   onClick={() => setAction("create")}
-                  className="w-full bg-gradient-to-r from-cyber-cyan to-cyber-purple hover:from-cyber-cyan/90 hover:to-cyber-purple/90 text-black font-semibold h-14 text-lg"
+                  className="w-full bg-gradient-to-r from-ny-red to-white hover:from-ny-red/90 hover:to-white/90 text-black font-semibold h-14 text-lg shadow-[0_0_15px_rgba(220,20,60,0.4)] hover:shadow-[0_0_20px_rgba(220,20,60,0.6)] transition-all"
                 >
                   <UserPlus className="h-5 w-5 mr-2" />
                   Takım Oluştur
@@ -198,7 +198,7 @@ export default function TeamSetup() {
                 <Button
                   onClick={() => setAction("join")}
                   variant="outline"
-                  className="w-full border-cyber-cyan text-cyber-cyan hover:bg-cyber-cyan/10 h-14 text-lg"
+                  className="w-full border-ny-red text-ny-red hover:bg-ny-red/10 h-14 text-lg"
                 >
                   <Users className="h-5 w-5 mr-2" />
                   Takıma Katıl
@@ -213,12 +213,12 @@ export default function TeamSetup() {
                     Team Name
                   </label>
                   <div className="relative">
-                    <Users className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-cyber-cyan" />
+                    <Users className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-ny-red" />
                     <Input
                       id="teamName"
                       type="text"
                       placeholder="Takım adı"
-                      className="pl-10 bg-black/30 border-white/10 text-white placeholder:text-muted-foreground focus-visible:border-cyber-cyan"
+                      className="pl-10 bg-black/30 border-ny-red/40 text-white placeholder:text-muted-foreground focus-visible:border-ny-red focus-visible:ring-2 focus-visible:ring-ny-red/50 shadow-[0_0_10px_rgba(220,20,60,0.3)]"
                       {...registerCreate("teamName")}
                     />
                   </div>
@@ -233,18 +233,18 @@ export default function TeamSetup() {
                     Takım Şifresi
                   </label>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-cyber-cyan" />
+                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-ny-red" />
                     <Input
                       id="teamPassword"
                       type={showTeamPassword ? "text" : "password"}
                       placeholder="Takım şifresi"
-                      className="pl-10 pr-10 bg-black/30 border-white/10 text-white placeholder:text-muted-foreground focus-visible:border-cyber-cyan"
+                      className="pl-10 pr-10 bg-black/30 border-ny-red/40 text-white placeholder:text-muted-foreground focus-visible:border-ny-red focus-visible:ring-2 focus-visible:ring-ny-red/50 shadow-[0_0_10px_rgba(220,20,60,0.3)]"
                       {...registerCreate("teamPassword")}
                     />
                     <button
                       type="button"
                       onClick={() => setShowTeamPassword(!showTeamPassword)}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-cyber-cyan transition-colors"
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-ny-red transition-colors"
                     >
                       {showTeamPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
@@ -263,10 +263,10 @@ export default function TeamSetup() {
                     Country
                   </label>
                   <div className="relative">
-                    <Globe className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-cyber-cyan z-10" />
+                    <Globe className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-ny-red z-10" />
                     <select
                       id="country"
-                      className="w-full h-10 pl-10 pr-10 rounded-md border border-white/10 bg-black/30 text-white text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyber-cyan focus-visible:border-cyber-cyan appearance-none cursor-pointer"
+                      className="w-full h-10 pl-10 pr-10 rounded-md border border-ny-red/40 bg-black/30 text-white text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ny-red/50 focus-visible:border-ny-red shadow-[0_0_10px_rgba(220,20,60,0.3)] appearance-none cursor-pointer"
                       {...registerCreate("country")}
                     >
                       <option value="">Choose Country</option>
@@ -293,12 +293,12 @@ export default function TeamSetup() {
                     Organization
                   </label>
                   <div className="relative">
-                    <Building2 className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-cyber-cyan" />
+                    <Building2 className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-ny-red" />
                     <Input
                       id="organization"
                       type="text"
                       placeholder="Organizasyon adı"
-                      className="pl-10 bg-black/30 border-white/10 text-white placeholder:text-muted-foreground focus-visible:border-cyber-cyan"
+                      className="pl-10 bg-black/30 border-ny-red/40 text-white placeholder:text-muted-foreground focus-visible:border-ny-red focus-visible:ring-2 focus-visible:ring-ny-red/50 shadow-[0_0_10px_rgba(220,20,60,0.3)]"
                       {...registerCreate("organization")}
                     />
                   </div>
@@ -310,12 +310,12 @@ export default function TeamSetup() {
                     CTFTime Link
                   </label>
                   <div className="relative">
-                    <Globe className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-cyber-cyan" />
+                    <Globe className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-ny-red" />
                     <Input
                       id="ctfTimeLink"
                       type="url"
                       placeholder="https://ctftime.org/team/..."
-                      className="pl-10 bg-black/30 border-white/10 text-white placeholder:text-muted-foreground focus-visible:border-cyber-cyan"
+                      className="pl-10 bg-black/30 border-ny-red/40 text-white placeholder:text-muted-foreground focus-visible:border-ny-red focus-visible:ring-2 focus-visible:ring-ny-red/50 shadow-[0_0_10px_rgba(220,20,60,0.3)]"
                       {...registerCreate("ctfTimeLink")}
                     />
                   </div>
@@ -339,9 +339,9 @@ export default function TeamSetup() {
                     />
                     <label
                       htmlFor="teamAvatar"
-                      className="flex items-center justify-center gap-2 h-10 w-full rounded-md border border-white/10 bg-black/30 px-3 py-2 text-sm text-muted-foreground cursor-pointer hover:bg-white/5 hover:border-cyber-cyan/30 transition-colors"
+                      className="flex items-center justify-center gap-2 h-10 w-full rounded-md border border-white/10 bg-black/30 px-3 py-2 text-sm text-muted-foreground cursor-pointer hover:bg-white/5 hover:border-ny-red/30 transition-colors"
                     >
-                      <Upload className="h-4 w-4 text-cyber-cyan" />
+                      <Upload className="h-4 w-4 text-ny-red" />
                       <span>Select File less than 1024px*1024px and 48KB</span>
                     </label>
                   </div>
@@ -358,7 +358,7 @@ export default function TeamSetup() {
                   </Button>
                   <Button
                     type="submit"
-                    className="bg-gradient-to-r from-cyber-cyan to-cyber-purple hover:from-cyber-cyan/90 hover:to-cyber-purple/90 text-black font-semibold px-8"
+                    className="bg-gradient-to-r from-ny-red to-white hover:from-ny-red/90 hover:to-white/90 text-black font-semibold px-8 shadow-[0_0_15px_rgba(220,20,60,0.4)] hover:shadow-[0_0_20px_rgba(220,20,60,0.6)] transition-all"
                     disabled={isLoading}
                   >
                     {isLoading ? "Oluşturuluyor..." : "OLUŞTUR"}
@@ -374,10 +374,10 @@ export default function TeamSetup() {
                     Team
                   </label>
                   <div className="relative">
-                    <Users className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-cyber-cyan z-10" />
+                    <Users className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-ny-red z-10" />
                     <select
                       id="team"
-                      className="w-full h-10 pl-10 pr-10 rounded-md border border-white/10 bg-black/30 text-white text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyber-cyan focus-visible:border-cyber-cyan appearance-none cursor-pointer"
+                      className="w-full h-10 pl-10 pr-10 rounded-md border border-ny-red/40 bg-black/30 text-white text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ny-red/50 focus-visible:border-ny-red shadow-[0_0_10px_rgba(220,20,60,0.3)] appearance-none cursor-pointer"
                       {...registerJoin("team")}
                     >
                       <option value="">Choose Team</option>
@@ -404,18 +404,18 @@ export default function TeamSetup() {
                     Takım Şifresi
                   </label>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-cyber-cyan" />
+                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-ny-red" />
                     <Input
                       id="teamPassword"
                       type={showJoinTeamPassword ? "text" : "password"}
                       placeholder="Takım şifresini giriniz"
-                      className="pl-10 pr-10 bg-black/30 border-white/10 text-white placeholder:text-muted-foreground focus-visible:border-cyber-cyan"
+                      className="pl-10 pr-10 bg-black/30 border-ny-red/40 text-white placeholder:text-muted-foreground focus-visible:border-ny-red focus-visible:ring-2 focus-visible:ring-ny-red/50 shadow-[0_0_10px_rgba(220,20,60,0.3)]"
                       {...registerJoin("teamPassword")}
                     />
                     <button
                       type="button"
                       onClick={() => setShowJoinTeamPassword(!showJoinTeamPassword)}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-cyber-cyan transition-colors"
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-ny-red transition-colors"
                     >
                       {showJoinTeamPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
@@ -431,10 +431,10 @@ export default function TeamSetup() {
                     Country
                   </label>
                   <div className="relative">
-                    <Globe className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-cyber-cyan z-10" />
+                    <Globe className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-ny-red z-10" />
                     <select
                       id="country"
-                      className="w-full h-10 pl-10 pr-10 rounded-md border border-white/10 bg-black/30 text-white text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyber-cyan focus-visible:border-cyber-cyan appearance-none cursor-pointer"
+                      className="w-full h-10 pl-10 pr-10 rounded-md border border-ny-red/40 bg-black/30 text-white text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ny-red/50 focus-visible:border-ny-red shadow-[0_0_10px_rgba(220,20,60,0.3)] appearance-none cursor-pointer"
                       {...registerJoin("country")}
                     >
                       <option value="">Choose Country</option>
@@ -461,12 +461,12 @@ export default function TeamSetup() {
                     Organization
                   </label>
                   <div className="relative">
-                    <Building2 className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-cyber-cyan" />
+                    <Building2 className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-ny-red" />
                     <Input
                       id="organization"
                       type="text"
                       placeholder="Organizasyon adı"
-                      className="pl-10 bg-black/30 border-white/10 text-white placeholder:text-muted-foreground focus-visible:border-cyber-cyan"
+                      className="pl-10 bg-black/30 border-ny-red/40 text-white placeholder:text-muted-foreground focus-visible:border-ny-red focus-visible:ring-2 focus-visible:ring-ny-red/50 shadow-[0_0_10px_rgba(220,20,60,0.3)]"
                       {...registerJoin("organization")}
                     />
                   </div>
@@ -478,12 +478,12 @@ export default function TeamSetup() {
                     CTFTime Link
                   </label>
                   <div className="relative">
-                    <Globe className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-cyber-cyan" />
+                    <Globe className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-ny-red" />
                     <Input
                       id="ctfTimeLink"
                       type="url"
                       placeholder="https://ctftime.org/team/..."
-                      className="pl-10 bg-black/30 border-white/10 text-white placeholder:text-muted-foreground focus-visible:border-cyber-cyan"
+                      className="pl-10 bg-black/30 border-ny-red/40 text-white placeholder:text-muted-foreground focus-visible:border-ny-red focus-visible:ring-2 focus-visible:ring-ny-red/50 shadow-[0_0_10px_rgba(220,20,60,0.3)]"
                       {...registerJoin("ctfTimeLink")}
                     />
                   </div>
@@ -507,9 +507,9 @@ export default function TeamSetup() {
                     />
                     <label
                       htmlFor="teamAvatar"
-                      className="flex items-center justify-center gap-2 h-10 w-full rounded-md border border-white/10 bg-black/30 px-3 py-2 text-sm text-muted-foreground cursor-pointer hover:bg-white/5 hover:border-cyber-cyan/30 transition-colors"
+                      className="flex items-center justify-center gap-2 h-10 w-full rounded-md border border-white/10 bg-black/30 px-3 py-2 text-sm text-muted-foreground cursor-pointer hover:bg-white/5 hover:border-ny-red/30 transition-colors"
                     >
-                      <Upload className="h-4 w-4 text-cyber-cyan" />
+                      <Upload className="h-4 w-4 text-ny-red" />
                       <span>Select File less than 1024px*1024px and 48KB</span>
                     </label>
                   </div>
@@ -526,7 +526,7 @@ export default function TeamSetup() {
                   </Button>
                   <Button
                     type="submit"
-                    className="bg-gradient-to-r from-cyber-cyan to-cyber-purple hover:from-cyber-cyan/90 hover:to-cyber-purple/90 text-black font-semibold px-8"
+                    className="bg-gradient-to-r from-ny-red to-white hover:from-ny-red/90 hover:to-white/90 text-black font-semibold px-8 shadow-[0_0_15px_rgba(220,20,60,0.4)] hover:shadow-[0_0_20px_rgba(220,20,60,0.6)] transition-all"
                     disabled={isLoading}
                   >
                     {isLoading ? "Katılıyor..." : "KATIL"}
